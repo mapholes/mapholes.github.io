@@ -2,7 +2,7 @@ MAP
   IMAGETYPE      PNG
   STATUS         ON 
   EXTENT         913154.843600 120114.582600 1067382.510900 272932.046000
-  IMAGECOLOR     255 255 255  
+  IMAGECOLOR     26 25 29  
   
   PROJECTION
     "init=epsg:2263"
@@ -43,5 +43,22 @@ MAP
     END    
   END
 
- END 
+#  WEB
+#    METADATA
+#       "wms_name"                       "nyccrash"
+#       "wms_title"                      "NYC Crash"
+#       "wms_abstract"                   "NYC Crash Map"
+#       "wms_onlineresource"             "proj2.php"
+#       "wms_srs"                        "EPSG:2263 EPSG:4326"
+#       "wms_formats"                    'png'
+#       "wfs_title"                      "NYC Crash"
+#       "wfs_onlineresource"             "proj2.php"
+#       "wfs_srs"                        "EPSG:2263 EPSG:4326"
+#       "wms_feature_info_mime_type"     "text/html"
+#       "wms_enable_request"             "*"
+#       "wfs_enable_request"             "*"
+#    END
+#  END
 
+ 
+END
