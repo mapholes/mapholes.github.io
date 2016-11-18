@@ -1,0 +1,47 @@
+MAP
+  IMAGETYPE      PNG
+  STATUS         ON 
+  EXTENT         913154.843600 120114.582600 1067382.510900 272932.046000
+  IMAGECOLOR     255 255 255  
+  
+  PROJECTION
+    "init=epsg:2263"
+  END
+  
+  OUTPUTFORMAT
+    NAME png
+    DRIVER "GD/PNG"
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+  END
+  
+  OUTPUTFORMAT
+    NAME jpeg
+    DRIVER "GD/JPEG"
+    MIMETYPE "image/jpeg"
+    IMAGEMODE RGB
+    EXTENSION "jpg"
+    FORMATOPTION QUALITY=80
+  END
+  
+
+  WEB
+    METADATA
+       "wms_name"       		"nypp"
+       "wms_title" 			"Police Precinct"
+       "wms_abstract"			"NYC Police Precinct Map"
+       "wms_onlineresource" 		"proj2.php"       
+       "wms_srs" 			"EPSG:2263 EPSG:4326"    
+       "wms_formats" 			'png'
+       "wfs_title"            		"Police Precinct"
+       "wfs_onlineresource"   		"proj2.php" 
+       "wfs_srs"               		"EPSG:2263 EPSG:4326"  
+       "wms_feature_info_mime_type" 	"text/html"
+       "wms_enable_request" 		"*"  	     
+       "wfs_enable_request" 		"*"  
+    END    
+  END
+
+ END 
+

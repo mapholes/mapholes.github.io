@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <!--
+  <script src="http://openlayers.org/api/2.7-rc3/OpenLayers.js"></script>
+  -->
+    <script src="OpenLayers.js"></script>
+
+    <script type="text/javascript">
+	    var map=null,cosmetic_layer=null;
+	    var gml=null;
+	   	var wms_url='proj2.php?';
+	   	var wfs_url='proj2.php?';
+	    var layer_name='nypp';
+	    var map_div='map';
+	    var node_div='nodeList';
+	    var gml_div='GMLTable';
+	    var wfs_div='WFSTable';
+	    var fid_seq=0;
+
+		function init()
+		{
+			gml=new OpenLayers.Format.GML({'extractAttributes': true});
+			var describefeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[0];
+			var html="<a href="+wfs_url+"Service=WFS&Version=1.0.0&Request=DescribeFeatureType&TypeName="+layer_name+">WFS Describe Feature</a>";
+			describefeaturerow.cells[0].innerHTML=html;
+			if(fid_seq>0)
+			{
+				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
+				html="<a href="+wfs_url+"Service=WFS&Version=1.0.0&Request=GetFeature&TypeName="+layer_name+"&maxfeatures=10>WFS GetFeature</a>";
+				getfeaturerow.cells[0].innerHTML=html;
+			}
+
+			map = new OpenLayers.Map('map', {
+				projection: "EPSG:2263",
+				units: "ft",
+				maxResolution: 250000,
+				maxExtent: new OpenLayers.Bounds(
+					913154.843600, 120114.582600, 1067382.510900, 272932.046000
+				)
+			});
+
+			map.addControl(new OpenLayers.Control.Navigation());
+			map.addControl(new OpenLayers.Control.MousePosition({position: new OpenLayers.Pixel(100,0)}));
+			map.addControl( new OpenLayers.Control.LayerSwitcher() );
+
+			var l_wms = new OpenLayers.Layer.WMS( "NYC Police Precinct",
+						wms_url, {layers: layer_name,format: "image/png"} );
+			map.addLayer(l_wms);
+			map.zoomToExtent(map.maxExtent);
+
+			map.events.register('click', map, function (e) {
+					OpenLayers.Util.getElement('nodeList').innerHTML = "Loading... please wait...";
+					var url =  l_wms.getFullRequestString({
+									REQUEST: "GetFeatureInfo",
+									EXCEPTIONS: "application/vnd.ogc.se_xml",
+									BBOX: l_wms.map.getExtent().toBBOX(),
+									X: e.xy.x,
+									Y: e.xy.y,
+									INFO_FORMAT: 'text/html',
+									QUERY_LAYERS: l_wms.params.LAYERS,
+									WIDTH: l_wms.map.size.w,
+									HEIGHT: l_wms.map.size.h});
+					OpenLayers.Util.getElement('nodeList').innerHTML=url
+					OpenLayers.loadURL(url, '', this, setHTML);
+					OpenLayers.Event.stop(e);
+			  });
+			}
+
+			function setHTML(response)
+			{
+				OpenLayers.Util.getElement(node_div).innerHTML = response.responseText;
+				var table= OpenLayers.Util.getElement(gml_div);
+				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
+				if(table!=null&&getfeaturerow!=null)
+				{
+					var fid=table.tBodies[0].rows[fid_seq].cells[1].innerHTML;
+					var url=wfs_url+"Service=WFS&Version=1.0.0&Request=GetFeature&FeatureID="+layer_name+"."+fid;
+					var html="<a href="+url+">WFS GetFeature ("+fid+")";
+					getfeaturerow.cells[0].innerHTML=html;
+					//alert(url);
+					OpenLayers.loadURL(url, '', this, add_wfs_layer);
+			}
+			}
+
+		   function add_wfs_layer(response)
+		   {
+			if(cosmetic_layer!=null)
+			{
+				map.removeLayer(cosmetic_layer);
+				cosmetic_layer.destroy();
+				cosmetic_layer=null;
+			}
+			//alert(response.responseText);
+			var doc = response.responseText;
+			var features=gml.read(doc);
+			//alert(features.length);
+			cosmetic_layer=new OpenLayers.Layer.Vector("Selected Feature");
+			cosmetic_layer.addFeatures(features);
+			map.addLayer(cosmetic_layer);
+			//map.zoomToExtent(cosmetic_layer.getExtent());
+		  }
+		</script>
+  </head>
+  <body onload="init();">
+    <h1>Proj2 template</h1>
+    <table>
+    <tr>
+    	<td><div id="map" style="width:800px; height:600px"></div></td>
+    	<td>
+			<div style="width:200">
+				<div id="nodeList">
+				</div>
+			</div>
+		</td>
+		</tr>
+	</table>
+  	<table id='WFSTable'>
+  	<tr><td></td></tr>
+  	<tr><td></td></tr>
+  	</table>
+  </body>
+</html>
+
