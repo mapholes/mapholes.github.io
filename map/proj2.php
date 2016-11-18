@@ -7,7 +7,7 @@ foreach ($_GET as $k=>$v) {
 }
 
 ms_ioinstallstdouttobuffer();
-$oMap = ms_newMapobj("/home/sing16/public_html/proj2/proj2.map");
+$oMap = ms_newMapobj("https://mapholes.github.io/map/proj2.map");
 
 
 $new_layer =ms_newlayerobj($oMap);
