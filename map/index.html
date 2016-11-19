@@ -61,6 +61,7 @@
 									WIDTH: l_wms.map.size.w,
 									HEIGHT: l_wms.map.size.h});
 //					OpenLayers.Util.getElement('nodeList').innerHTML=url
+					alert('URL:' + url);
 					OpenLayers.loadURL(url, '', this, setHTML);
 					OpenLayers.Event.stop(e);
 			  });
@@ -68,6 +69,7 @@
 
 			function setHTML(response)
 			{
+				alert('setHTML response: ' + response);
 				OpenLayers.Util.getElement(node_div).innerHTML = response.responseText;
 				var table= OpenLayers.Util.getElement(gml_div);
 				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
@@ -84,6 +86,7 @@
 
 		   function add_wfs_layer(response)
 		   {
+		   	alert('add_wfs_layer response: ' + response);
 			if(cosmetic_layer!=null)
 			{
 				map.removeLayer(cosmetic_layer);
