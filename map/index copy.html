@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Rakkas|PT+Sans" rel="stylesheet">
+        <script src="OpenLayers.js"></script>
+
+    <script type="text/javascript">
+	    var map=null,cosmetic_layer=null;
+	    var gml=null;
+	   	var wms_url='http://134.74.146.40/~sing16/proj1/mapscripts/allLayers.php?';
+	   	var wfs_url='http://134.74.146.40/~sing16/proj1/mapscripts/allLayers.php?';
+	    var layer_name='transformers';
+	    var map_div='map';
+	    var node_div='nodeList';
+	    var gml_div='GMLTable';
+	    var wfs_div='WFSTable';
+	    var fid_seq=0;
+
+		function init()
+		{
+			map = new OpenLayers.Map('map', {
+				projection: "EPSG:2263",
+				units: "ft",
+				maxResolution: 250000,
+				maxExtent: new OpenLayers.Bounds(
+					913154.843600, 120114.582600, 1067382.510900, 272932.046000
+				)
+			});
+
+			var l_wms = new OpenLayers.Layer.WMS( "NYC",
+						wms_url, {layers: layer_name,format: "image/png"} );
+			map.addLayer(l_wms);
+
+			map.zoomToExtent(map.maxExtent);
+
+			map.addControl(new OpenLayers.Control.Navigation());
+			map.addControl( new OpenLayers.Control.LayerSwitcher() );
+
+			}
+
+		</script>
+  </head>
+  <body onload="init();">
+
+    <div id="Heading">
+        <h1>
+            <span id="title">WebGIS &middot; Term Project</span> 
+        </h1>
+    </div>
+<br><br>
+	<table>
+		<tr>
+			<td><div id="map" style="width:1200px; height:680px;"></div></td>
+			<td>
+				<div>
+					<div id="nodeList">
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<table id='WFSTable'>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+	</table>
+
+    <div id="footer">
+     <p style="color: #333;"> Amandeep Singh &middot; Phearun Rith &middot; Ofure Ukpebor &middot; Luis Villamarin &middot;  WebGIS &middot;
+      Fall 2016 &middot; The City College of New York </p>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,467 @@
+MAP
+  IMAGETYPE      PNG
+  STATUS         ON 
+  EXTENT         913154.843600 120114.582600 1067382.510900 272932.046000
+  IMAGECOLOR     255 255 255  
+  SHAPEPATH      "/tmp"
+  
+  PROJECTION
+    "init=epsg:2263"
+  END
+
+  SYMBOL
+    NAME 'circle'
+    TYPE ELLIPSE
+    POINTS 1 1 END
+    FILLED TRUE
+  END
+
+ SYMBOL
+   NAME 'spade'
+   TYPE TRUETYPE
+   CHARACTER "♠"
+ END
+
+ SYMBOL
+   NAME "diag_holes"
+   TYPE vector
+   FILLED true
+   POINTS
+     0.0     0.0
+     # Left half circle
+     0.0       0.24
+     0.0647    0.2485
+     0.1250    0.2734
+     0.1768    0.3132
+     0.2165    0.3649
+     0.2415    0.4252
+     0.25      0.5
+     0.2415    0.5647
+     0.2165    0.6250
+     0.1768    0.6768
+     0.1250    0.7165
+     0.0647    0.7415
+     0.0       0.75
+ 
+     0.0       1.0
+     # Bottom half circle
+     0.24      1
+     0.2485    0.9252
+     0.2734    0.8649
+     0.3132    0.8132
+     0.3649    0.7734
+     0.4252    0.7485
+     0.5       0.74
+     0.5647    0.7485
+     0.6250    0.7734
+     0.6768    0.8132
+     0.7165    0.8649
+     0.7415    0.9252
+     0.75      1
+ 
+     1.0     1.0
+     # Right half circle
+     1 0.75
+     0.9252    0.7415
+     0.8649    0.7165
+     0.8132    0.6768
+     0.7734    0.6250
+     0.7485    0.5647
+     0.74      0.5
+     0.7485    0.4252
+     0.7734    0.3649
+     0.8132    0.3132
+     0.8649    0.2734
+     0.9252    0.2485
+     1 0.24
+ 
+     1.0     0.0
+     # Top half circle
+     0.75      0.0
+     0.7415    0.0647
+     0.7165    0.1250
+     0.6768    0.1768
+     0.6250    0.2165
+     0.5647    0.2415
+     0.5       0.25
+     0.4252    0.2415
+     0.3649    0.2165
+     0.3132    0.1768
+     0.2734    0.1250
+     0.2485    0.0647
+     0.24      0.0
+ 
+     0.0     0.0
+   END
+  END
+
+
+  
+  OUTPUTFORMAT
+    NAME png
+    DRIVER "GD/PNG"
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+  END
+  
+  OUTPUTFORMAT
+    NAME jpeg
+    DRIVER "GD/JPEG"
+    MIMETYPE "image/jpeg"
+    IMAGEMODE RGB
+    EXTENSION "jpg"
+    FORMATOPTION QUALITY=80
+  END
+
+
+  WEB
+    METADATA
+       "wms_srs" 			"EPSG:2263 EPSG:4326"    
+       "wms_formats" 			'png'
+	wms_enable_request 		 "*"
+    END    
+  END
+  
+# Start of LAYER DEFINITIONS ------------------------------------------
+
+  LAYER # NYC community district begins here
+    NAME         nycd
+    DATA         nycd
+    STATUS       ON
+    TYPE         POLYGON
+    DUMP 	 TRUE
+    CLASS
+      NAME       "nycd"
+      STYLE
+        COLOR        "#F2F2E9"
+        OUTLINECOLOR "#D2CABE"
+      END
+   END
+  END # NYC community district ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+
+  LAYER # NYC Police Precinct begins here
+     NAME         nypp
+     DATA         nypp
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP 	 TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select * from nypp order by precinct) as foo using unique precinct using SRID=2263"
+     TEMPLATE	 spwms.html
+     CLASS
+       NAME       "NYC Police Precinct"
+       STYLE
+         COLOR        232 232 232
+         OUTLINECOLOR 32 32 32
+       END
+     END
+   END # YC Police Precinct layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+
+  LAYER # All AOIs in NYC
+     NAME         aoi
+     STATUS       ON
+     TYPE         POINT
+     DUMP 	  TRUE
+     LABELITEM    "name"
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+#    CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (select * from aoi order by name) as foo using unique name using SRID=2263" 
+     CLASS
+       NAME       "NYC - Areas of Interest"
+       STYLE
+        SYMBOL	     "spade"    
+        SIZE	     14	
+        COLOR        "#6D4C41"
+       END
+       LABEL
+        COLOR "#154360"
+        SIZE 7
+        ANTIALIAS TRUE
+        POSITION CL
+        PARTIALS FALSE
+        MINDISTANCE 300
+        BUFFER 1
+       END 
+     END
+  END # NYC AOI Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+
+# Part II
+
+  LAYER # NYC HW Routes Layer
+     NAME         hw
+     STATUS	  ON
+     TYPE         LINE
+     LABELITEM    "route"
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+#    CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (select * from hw where route>'1' order by georte) as foo  using unique georte using SRID=2263"
+     CLASS
+       NAME	  "NYC HIGHWAY ROUTES"
+       LABEL
+        COLOR 78 75 67
+        SIZE 7
+        ANTIALIAS TRUE
+        POSITION CL
+        PARTIALS FALSE
+        MINDISTANCE 300
+        BUFFER 10 
+       END 
+       STYLE
+        COLOR "#F8C471" #102 102 102
+        WIDTH 4.0
+       END
+       STYLE
+        COLOR 255 255 255
+        WIDTH 2.0
+        LINECAP BUTT
+        PATTERN 8 12 END
+       END
+      END
+  END # NYC HW Routes Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part III
+
+  LAYER # Queens CD Layer begins here
+     NAME         queensCD
+     STATUS	  ON
+     TYPE         POLYGON
+     LABELITEM    "borocd"
+     DUMP        TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+#    CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (select * from cd where CAST(borocd AS TEXT) like '4%' order by borocd) as foo using unique borocd using SRID=2263"
+     CLASS
+       NAME	  "Queens Community Districts"
+       STYLE
+         OUTLINECOLOR "#21618C"
+         WIDTH        4
+       END
+       STYLE
+          SYMBOL "diag_holes"
+          SIZE 10
+          COLOR "#AED6F1" # 250 220 102
+       END
+       LABEL
+          COLOR "#21618C"
+          SIZE 7
+          ANTIALIAS TRUE
+          POSITION CC
+          PARTIALS FALSE
+          MINDISTANCE 300
+          BUFFER 2
+       END 
+     END
+   END # Queens CD layer ends here
+
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part IV
+
+  LAYER # Convex Hull of AOI Layer begins here
+     NAME         convexHull
+     STATUS	  ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+#    CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (select ST_ConvexHull(ST_Collect(the_geom)) As the_geom from aoi) as foo using unique the_geom using SRID=2263"
+     CLASS
+       NAME	  "Convex Hull of AOIs"
+       STYLE
+         COLOR        140 170 200
+         OUTLINECOLOR 120 220 254
+         OPACITY 50
+       END
+     END
+  END # Convex Hull of AOI layer ends here
+
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part V
+
+  LAYER # NYC HW Buffer Layer
+     NAME         hwBuffer
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+#    CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (select st_buffer(the_geom,5000) As the_geom from hw group by gid) as foo using unique the_geom using SRID=2263"
+     CLASS
+       NAME   "NYC HIGHWAY ROUTES"
+       STYLE
+            COLOR "#AEB6BF"
+            OUTLINECOLOR "#EAB17B"
+            OPACITY 30
+       END
+     END
+  END # NYC HW Routes Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . I
+
+   LAYER # Intersection in CG and SD for AOI.ID = 79
+     NAME         cgSdInt
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select st_intersection(cg_79.the_geom,sd_79.the_geom) as the_geom from cg_79,sd_79) as foo using unique the_geom using SRID=4326"
+     CLASS
+       NAME       "Intersection in CG and SD for AOI.ID = 79"
+       STYLE
+         COLOR        "#3498DB"
+         OUTLINECOLOR "#21618C"
+         OPACITY 90
+         WIDTH 4
+       END
+     END
+   END #  Intersection Layer ends here
+
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VII . II
+
+   LAYER # Layer for CG =16 and AOI.ID = 79
+     NAME         cg
+     STATUS	  ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select cg.the_geom from cg,aoi where aoi.id=79 and st_intersects(cg.the_geom,aoi.the_geom)) as foo using unique the_geom using SRID=4326"
+     CLASS
+       NAME	  "Layer for CG = 16 and AOI.ID = 79"
+       STYLE
+         COLOR    "#48C9B0"
+       END
+     END
+   END #  CG Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . III
+
+   LAYER # Layer for SD = 7 and AOI.ID = 79
+     NAME         sd
+     STATUS	  ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select sd.the_geom from sd,aoi where aoi.id=79 and st_intersects(sd.the_geom,aoi.the_geom)) as foo using unique the_geom using SRID=4326"
+     CLASS
+       NAME	  "Layer for CG = 16 and AOI.ID = 79"
+       STYLE
+         COLOR        "#DC7633"
+       END
+     END
+   END #  SD Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . IV
+
+   LAYER # Union of CD and SD for AOI.ID = 79
+     NAME         cgSdUnion
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP 	  TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select st_union(cg_79.the_geom,sd_79.the_geom) as the_geom from cg_79,sd_79) as foo using unique the_geom using SRID=4326"
+     CLASS
+       NAME       "Union in CG and SD for AOI.ID = 79"
+       STYLE
+         COLOR        "#3498DB" 
+         OPACITY 50
+         OUTLINECOLOR "#21618C"
+         WIDTH 4
+       END
+     END
+   END #  Union Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . V
+
+   LAYER # Diff of CD and SD for AOI.ID = 79
+     NAME         cgSdDiff
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP	  TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select ST_Difference(cg_79.the_geom,sd_79.the_geom) as the_geom from cg_79,sd_79) as foo using unique the_geom using SRID=4326"	    
+     CLASS
+       NAME       "Difference in CG and SD for AOI.ID = 79"
+        STYLE
+         COLOR        "#3498DB"
+         OUTLINECOLOR "#21618C"
+         OPACITY 90
+         WIDTH 4
+       END
+     END
+   END #  Diff Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . VI
+
+   LAYER # Diff of SD and CG for AOI.ID = 79
+     NAME         SdCgDiff
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP	  TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select ST_Difference(sd_79.the_geom,cg_79.the_geom) as the_geom from cg_79,sd_79) as foo using unique the_geom using SRID=4326"	    
+     CLASS
+       NAME       "Difference in SD and CG for AOI.ID = 79"
+        STYLE
+         COLOR        "#3498DB"
+         OUTLINECOLOR "#21618C"
+         OPACITY 90
+         WIDTH 4 
+       END
+     END
+   END #  Diff Layer ends here
+
+#-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+# Part VI . VII
+
+   LAYER # SymDifference of SD and CG for AOI.ID = 79
+     NAME         CgSdSymDiff
+     STATUS       ON
+     TYPE         POLYGON
+     DUMP         TRUE
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=demo password=demo dbname=coursedemo host=192.168.88.30"
+     DATA "the_geom from (select ST_SymDifference(cg_79.the_geom,sd_79.the_geom) as the_geom from cg_79,sd_79) as foo using unique the_geom using SRID=4326"	    
+     CLASS
+       NAME       "SymDifference in SD and CG for AOI.ID = 79"
+	STYLE
+         COLOR        "#3498DB"
+         OUTLINECOLOR "#21618C"
+         OPACITY 90
+         WIDTH 4
+       END
+     END
+   END #  SymDifference Layer ends here
+
+
+END # All map files must come to an end just as all other things must come to...
+
+
