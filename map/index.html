@@ -8,9 +8,9 @@
     <script type="text/javascript">
 	    var map=null,cosmetic_layer=null;
 	    var gml=null;
-	   	var wms_url='http://134.74.146.40/~sing16/proj2/proj2.php?';
-	   	var wfs_url='http://134.74.146.40/~sing16/proj2/proj2.php?';
-	    var layer_name='nypp';
+	   	var wms_url='http://134.74.146.40/~sing16/termProject/termProject.php?';
+	   	var wfs_url='http://134.74.146.40/~sing16/termProject/termProject.php?';
+	    var layer_name='nypp,transformers';
 	    var map_div='map';
 	    var node_div='nodeList';
 	    var gml_div='GMLTable';
@@ -19,89 +19,79 @@
 
 		function init()
 		{
-			gml=new OpenLayers.Format.GML({'extractAttributes': true});
-			var describefeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[0];
-			var html="<a href="+wfs_url+"Service=WFS&Version=1.0.0&Request=DescribeFeatureType&TypeName="+layer_name+">WFS Describe Feature</a>";
-			describefeaturerow.cells[0].innerHTML=html;
-			if(fid_seq>0)
-			{
-				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
-				html="<a href="+wfs_url+"Service=WFS&Version=1.0.0&Request=GetFeature&TypeName="+layer_name+"&maxfeatures=10>WFS GetFeature</a>";
-				getfeaturerow.cells[0].innerHTML=html;
-			}
+			// map = new OpenLayers.Map('map', {
+			// 	projection: "EPSG:2263",
+			// 	units: "ft",
+			// 	maxResolution: 250000,
+			// 	maxExtent: new OpenLayers.Bounds(
+			// 		913154.843600, 120114.582600, 1067382.510900, 272932.046000
+			// 	)
+			// });
 
-			map = new OpenLayers.Map('map', {
-				projection: "EPSG:2263",
-				units: "ft",
-				maxResolution: 250000,
-				maxExtent: new OpenLayers.Bounds(
-					913154.843600, 120114.582600, 1067382.510900, 272932.046000
-				)
+			map = new OpenLayers.Map({
+			    div: "map",
+			    projection: "EPSG:3857",
+			    numZoomLevels: 22,
+			    layers: [
+			        new OpenLayers.Layer.Grid(
+			            "Google Physical",
+			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=terrain", 
+			            null, options
+			        ),
+			        new OpenLayers.Layer.Grid(
+			            "Google Streets",
+			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=roadmap", 
+			            null, options
+			        ),
+			        new OpenLayers.Layer.Grid(
+			            "Google Hybrid",
+			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=hybrid", 
+			            null, options
+			        ),
+			        new OpenLayers.Layer.Grid(
+			            "Google Satellite",
+			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite", 
+			            null, options
+			        ),
+			        // the same layer again, but scaled to allow map sizes up to 1280x1280 pixels
+			        new OpenLayers.Layer.Grid(
+			            "Google Satellite (scale=2)",
+			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite&scale=2", 
+			            null, OpenLayers.Util.applyDefaults({
+			                getURL: function() {
+			                    var center = this.map.getCenter().transform("EPSG:3857", "EPSG:4326"),
+			                        size = this.map.getSize();
+			                    return [
+			                        this.url, "&center=", center.lat, ",", center.lon,
+			                        "&zoom=", (this.map.getZoom() - 1),
+			                        "&size=", Math.floor(size.w / 2), "x", Math.floor(size.h / 2)
+			                    ].join("");
+			                }
+			            }, options)
+			        )
+			    ],
+			    center: new OpenLayers.LonLat(10.2, 48.9).transform("EPSG:4326", "EPSG:3857"),
+			    zoom: 5
 			});
 
+			// var l_wms = new OpenLayers.Layer.WMS( "NYC",
+			// 			wms_url, {layers: layer_name,format: "image/png"} );
+			// map.addLayer(l_wms);
+
+
+			// var l_googleTerrain = new OpenLayers.Layer.Grid(
+			// 				            "Google Physical",
+			// 				            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=terrain", 
+			// 				            null, options);
+			// map.addLayer(l_googleTerrain);
+
+//			map.zoomToExtent(map.maxExtent);
+
 			map.addControl(new OpenLayers.Control.Navigation());
-			map.addControl(new OpenLayers.Control.MousePosition({position: new OpenLayers.Pixel(100,0)}));
 			map.addControl( new OpenLayers.Control.LayerSwitcher() );
 
-			var l_wms = new OpenLayers.Layer.WMS( "NYC Police Precinct",
-						wms_url, {layers: layer_name,format: "image/png"} );
-			map.addLayer(l_wms);
-			map.zoomToExtent(map.maxExtent);
-
-			map.events.register('click', map, function (e) {
-					OpenLayers.Util.getElement('nodeList').innerHTML = "Loading... please wait...";
-					var url =  l_wms.getFullRequestString({
-									REQUEST: "GetFeatureInfo",
-									EXCEPTIONS: "application/vnd.ogc.se_xml",
-									BBOX: l_wms.map.getExtent().toBBOX(),
-									X: e.xy.x,
-									Y: e.xy.y,
-									INFO_FORMAT: 'text/html',
-									QUERY_LAYERS: l_wms.params.LAYERS,
-									WIDTH: l_wms.map.size.w,
-									HEIGHT: l_wms.map.size.h});
-//					OpenLayers.Util.getElement('nodeList').innerHTML=url
-					alert('URL:' + url);
-					OpenLayers.loadURL(url, '', this, setHTML);
-					OpenLayers.Event.stop(e);
-			  });
 			}
 
-			function setHTML(response)
-			{
-				alert('setHTML response: ' + response.responseText);
-				OpenLayers.Util.getElement(node_div).innerHTML = response.responseText;
-				var table= OpenLayers.Util.getElement(gml_div);
-				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
-				if(table!=null&&getfeaturerow!=null)
-				{
-					var fid=table.tBodies[0].rows[fid_seq].cells[1].innerHTML;
-					var url=wfs_url+"Service=WFS&Version=1.0.0&Request=GetFeature&FeatureID="+layer_name+"."+fid;
-					var html="<a href="+url+">WFS GetFeature ("+fid+")";
-					getfeaturerow.cells[0].innerHTML=html;
-					//alert(url);
-					OpenLayers.loadURL(url, '', this, add_wfs_layer);
-			}
-			}
-
-		   function add_wfs_layer(response)
-		   {
-		   	alert('add_wfs_layer response: ' + response.responseText);
-			if(cosmetic_layer!=null)
-			{
-				map.removeLayer(cosmetic_layer);
-				cosmetic_layer.destroy();
-				cosmetic_layer=null;
-			}
-//			alert(response.responseText);
-			var doc = response.responseText;
-			var features=gml.read(doc);
-			//alert(features.length);
-			cosmetic_layer=new OpenLayers.Layer.Vector("Selected Feature");
-			cosmetic_layer.addFeatures(features);
-			map.addLayer(cosmetic_layer);
-			//map.zoomToExtent(cosmetic_layer.getExtent());
-		  }
 		</script>
   </head>
   <body onload="init();">
@@ -114,7 +104,7 @@
 <br><br>
 	<table>
 		<tr>
-			<td><div id="map" style="width:900px; height:680px;"></div></td>
+			<td><div id="map" style="width:1200px; height:680px;"></div></td>
 			<td>
 				<div>
 					<div id="nodeList">
@@ -135,4 +125,3 @@
 
   </body>
 </html>
-

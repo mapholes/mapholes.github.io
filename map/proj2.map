@@ -8,6 +8,12 @@ MAP
     "init=epsg:2263"
   END
   
+ SYMBOL
+   NAME 'transformer'
+   TYPE TRUETYPE
+   CHARACTER "♠"
+ END
+
   OUTPUTFORMAT
     NAME png
     DRIVER "GD/PNG"
@@ -60,5 +66,33 @@ MAP
 #    END
 #  END
 
+  LAYER # Transformers Layer
+     NAME         transformers
+     STATUS       ON
+     TYPE         POINT
+     DUMP         TRUE
+     LABELITEM    "address"
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (SELECT * FROM manholes WHERE complaint_type = 'Transformer' order by gid) as foo using unique gid using SRID=2263" 
+     CLASS
+       NAME       "Transformers"
+       STYLE
+        SYMBOL       "transformer"    
+        SIZE         12
+        COLOR        "#6D4C41"
+       END
+       LABEL
+        COLOR "#154360"
+        SIZE 7
+        ANTIALIAS TRUE
+        POSITION CL
+        PARTIALS FALSE
+        MINDISTANCE 300
+        BUFFER 1
+       END 
+     END
+  END # Transformers Layer ends here
  
+
 END
