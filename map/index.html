@@ -69,7 +69,7 @@
 
 			function setHTML(response)
 			{
-				alert('setHTML response: ' + response);
+				alert('setHTML response: ' + response.responseText);
 				OpenLayers.Util.getElement(node_div).innerHTML = response.responseText;
 				var table= OpenLayers.Util.getElement(gml_div);
 				var getfeaturerow=OpenLayers.Util.getElement(wfs_div).tBodies[0].rows[1];
@@ -86,7 +86,7 @@
 
 		   function add_wfs_layer(response)
 		   {
-		   	alert('add_wfs_layer response: ' + response);
+		   	alert('add_wfs_layer response: ' + response.responseText);
 			if(cosmetic_layer!=null)
 			{
 				map.removeLayer(cosmetic_layer);
