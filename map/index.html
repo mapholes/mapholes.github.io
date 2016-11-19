@@ -6,91 +6,25 @@
         <script src="OpenLayers.js"></script>
 
     <script type="text/javascript">
-	    var map=null,cosmetic_layer=null;
-	    var gml=null;
-	   	var wms_url='http://134.74.146.40/~sing16/termProject/termProject.php?';
-	   	var wfs_url='http://134.74.146.40/~sing16/termProject/termProject.php?';
-	    var layer_name='nypp,transformers';
-	    var map_div='map';
-	    var node_div='nodeList';
-	    var gml_div='GMLTable';
-	    var wfs_div='WFSTable';
-	    var fid_seq=0;
+var map;
 
-		function init()
-		{
-			// map = new OpenLayers.Map('map', {
-			// 	projection: "EPSG:2263",
-			// 	units: "ft",
-			// 	maxResolution: 250000,
-			// 	maxExtent: new OpenLayers.Bounds(
-			// 		913154.843600, 120114.582600, 1067382.510900, 272932.046000
-			// 	)
-			// });
+function init() {
 
-			map = new OpenLayers.Map({
-			    div: "map",
-			    projection: "EPSG:3857",
-			    numZoomLevels: 22,
-			    layers: [
-			        new OpenLayers.Layer.Grid(
-			            "Google Physical",
-			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=terrain", 
-			            null, options
-			        ),
-			        new OpenLayers.Layer.Grid(
-			            "Google Streets",
-			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=roadmap", 
-			            null, options
-			        ),
-			        new OpenLayers.Layer.Grid(
-			            "Google Hybrid",
-			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=hybrid", 
-			            null, options
-			        ),
-			        new OpenLayers.Layer.Grid(
-			            "Google Satellite",
-			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite", 
-			            null, options
-			        ),
-			        // the same layer again, but scaled to allow map sizes up to 1280x1280 pixels
-			        new OpenLayers.Layer.Grid(
-			            "Google Satellite (scale=2)",
-			            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite&scale=2", 
-			            null, OpenLayers.Util.applyDefaults({
-			                getURL: function() {
-			                    var center = this.map.getCenter().transform("EPSG:3857", "EPSG:4326"),
-			                        size = this.map.getSize();
-			                    return [
-			                        this.url, "&center=", center.lat, ",", center.lon,
-			                        "&zoom=", (this.map.getZoom() - 1),
-			                        "&size=", Math.floor(size.w / 2), "x", Math.floor(size.h / 2)
-			                    ].join("");
-			                }
-			            }, options)
-			        )
-			    ],
-			    center: new OpenLayers.LonLat(10.2, 48.9).transform("EPSG:4326", "EPSG:3857"),
-			    zoom: 5
-			});
+    map = new OpenLayers.Map({
+        div: "map",
+        allOverlays: true
+    });
 
-			// var l_wms = new OpenLayers.Layer.WMS( "NYC",
-			// 			wms_url, {layers: layer_name,format: "image/png"} );
-			// map.addLayer(l_wms);
+    var osm = new OpenLayers.Layer.OSM();
+    var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
 
+    // note that first layer must be visible
+    map.addLayers([osm, gmap]);
 
-			// var l_googleTerrain = new OpenLayers.Layer.Grid(
-			// 				            "Google Physical",
-			// 				            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=terrain", 
-			// 				            null, options);
-			// map.addLayer(l_googleTerrain);
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.zoomToMaxExtent();
 
-//			map.zoomToExtent(map.maxExtent);
-
-			map.addControl(new OpenLayers.Control.Navigation());
-			map.addControl( new OpenLayers.Control.LayerSwitcher() );
-
-			}
+}
 
 		</script>
   </head>
