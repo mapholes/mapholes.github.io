@@ -1,41 +1,85 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
+<head>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href="https://fonts.googleapis.com/css?family=Rakkas|PT+Sans" rel="stylesheet">
-        <script src="OpenLayers.js"></script>
+	<script src="OpenLayers.js"></script>
 
-    <script type="text/javascript">
-var map;
+	<script type="text/javascript">
+	var map;
 
-function init() {
+	function init() {
 
-    map = new OpenLayers.Map({
-        div: "map",
-        allOverlays: true
-    });
+		map = new OpenLayers.Map({
+			div: "map",
+			allOverlays: true
+		});
 
-    var osm = new OpenLayers.Layer.OSM();
-    var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
+		var osm = new OpenLayers.Layer.OSM();
+		var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
 
-    // note that first layer must be visible
-    map.addLayers([osm, gmap]);
+// note that first layer must be visible
+map.addLayers([osm, gmap]);
 
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
-    map.zoomToMaxExtent();
+map.addControl(new OpenLayers.Control.LayerSwitcher());
+map.zoomToMaxExtent();
 
 }
 
-		</script>
-  </head>
-  <body onload="init();">
 
-    <div id="Heading">
-        <h1>
-            <span id="title">WebGIS &middot; Term Project</span> 
-        </h1>
-    </div>
-<br><br>
+var x = document.getElementById("demo");
+
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition, showError);
+	} else {
+		x.innerHTML = "Geolocation is not supported by this browser.";
+	}
+}
+
+function showPosition(position) {
+	var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+	var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
+	+latlon+"&zoom=14&size=400x300&maptype=roadmap&key=AIzaSyBft3F6K5PxBaF8CZAq-8X_Cuedw87PU6Y";
+	document.getElementById("mapholder").innerHTML = "<iframe src='"+img_url+"'> </iframe>";
+}
+
+function showError(error) {
+	switch(error.code) {
+		case error.PERMISSION_DENIED:
+		x.innerHTML = "User denied the request for Geolocation."
+		break;
+		case error.POSITION_UNAVAILABLE:
+		x.innerHTML = "Location information is unavailable."
+		break;
+		case error.TIMEOUT:
+		x.innerHTML = "The request to get user location timed out."
+		break;
+		case error.UNKNOWN_ERROR:
+		x.innerHTML = "An unknown error occurred."
+		break;
+	}
+}
+
+</script>
+</head>
+<body onload="init();">
+
+	<div id="Heading">
+		<h1>
+			<span id="title">WebGIS &middot; Term Project</span> 
+		</h1>
+	</div>
+	<br><br>
+
+		<p id="demo">Click the button to get your position.</p>
+
+	<button onclick="getLocation()">Try It</button>
+
+	<div id="mapholder"></div>
+
+
 	<table>
 		<tr>
 			<td><div id="map" style="width:1200px; height:680px;"></div></td>
@@ -52,10 +96,14 @@ function init() {
 		<tr><td></td></tr>
 	</table>
 
-    <div id="footer">
-     <p style="color: #333;"> Amandeep Singh &middot; Phearun Rith &middot; Ofure Ukpebor &middot; Luis Villamarin &middot;  WebGIS &middot;
-      Fall 2016 &middot; The City College of New York </p>
-    </div>
 
-  </body>
+
+
+
+	<div id="footer">
+		<p style="color: #333;"> Amandeep Singh &middot; Phearun Rith &middot; Ofure Ukpebor &middot; Luis Villamarin &middot;  WebGIS &middot;
+			Fall 2016 &middot; The City College of New York </p>
+		</div>
+
+</body>
 </html>
