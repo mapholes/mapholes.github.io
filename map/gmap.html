@@ -42,7 +42,8 @@
         var debugdata;
 
     	/*****************************************  INITIALIZATION FUNCTION ******************************/
-    	window.onload = function(){
+        function init() {
+        // window.onload = function(){
     		//Call the functions here :::
     		// var mapOptions = {
     		// center: new google.maps.LatLng(40.7590615,-73.969231),  //The latlng centered at new york city
@@ -539,11 +540,9 @@
     
 	</head>
 
-	<body>
+	<body onload="init();">
 		<div id="map_canvas"></div>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap">
-</script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap" async defer></script>
 	</body>
 
 
