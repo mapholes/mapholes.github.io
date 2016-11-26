@@ -23,7 +23,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
         <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script> 
-    	<!-- // <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=drawing"></script> -->
+    	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=drawing"></script>
 
     	<script>
     	// The Coding starts here .....
@@ -42,7 +42,7 @@
         var debugdata;
 
     	/*****************************************  INITIALIZATION FUNCTION ******************************/
-        function init() {
+        function initMap() {
         // window.onload = function(){
     		//Call the functions here :::
     		// var mapOptions = {
@@ -540,7 +540,7 @@
     
 	</head>
 
-	<body onload="init();">
+	<body onload="initMap();">
 		<div id="map_canvas"></div>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap" async defer></script>
 	</body>
