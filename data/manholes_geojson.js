@@ -19,7 +19,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
-    "status":"Closed",
+    "status":"Company",
     "lastupdated":"3/12/10 11:12",
     "borough":"BROOKLYN",
     "xcoordinate":984301,
