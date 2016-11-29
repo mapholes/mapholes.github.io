@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>GIS Term Project | Group 6</title>
-
-		<style type="text/css">
-        	html, body, #map
-         	{
-        		height: 100%;
-        		margin: 0px;
-        		padding: 0px;
-        	}
-    	</style>
-
+<head>
+  <meta charset="utf-8">
+  <title>GIS Term Project | Group 6</title>
+  <style type="text/css">
+  html, body, #map
+  {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+  }
+  </style>
     	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	</head>
@@ -25,66 +23,72 @@
 
     <script>
         var map; //the google map element
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>
+
+  <script>
+    	var map; //the google map element
         function initMap() {
             var mapOptions = {
-            center: new google.maps.LatLng(40.674728, -73.955650), 
-            zoom:13,
-            styles:[
-                    {
-                        "featureType": "administrative",
-                        "elementType": "labels.text.fill",
-                        "stylers": [ { "color": "#00ee00" },{"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "administrative.country",
-                        "elementType": "geometry",
-                        "stylers": [{"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "administrative.country",
-                        "elementType": "geometry.stroke",
-                        "stylers": [{"visibility": "on"}]
-                    },
-                    {
-                        "featureType": "administrative.country",
-                        "elementType": "labels.text",
-                        "stylers": [ {"hue": "#fff600"}]
-                    },
-                    {
-                        "featureType": "landscape",
-                        "elementType": "all"
-                    },
-                    {
-                        "featureType": "poi",
-                        "elementType": "all",
-                        "stylers": [
-                            {"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "road",
-                        "elementType": "all",
-                        "stylers": [{"saturation": -100},{"lightness": 45}]
-                    },
-                    {
-                        "featureType": "road.highway",
-                        "elementType": "all",
-                        "stylers": [ { "visibility": "off"}]
-                    },
-                    {
-                        "featureType": "road.arterial",
-                        "elementType": "labels.icon",
-                        "stylers": [{"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "transit",
-                        "elementType": "all",
-                        "stylers": [{"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "water",
-                        "elementType": "all",
-                        "stylers": [{"visibility": "on"}]
-                    }
+                center: new google.maps.LatLng(40.604050, -74.000557), 
+                zoom:13,
+                styles:[
+                {
+                    "featureType": "administrative",
+                    "elementType": "labels.text.fill",
+                    "stylers": [ { "color": "#00ee00" },{"visibility": "off"}]
+                },
+                {
+                    "featureType": "administrative.country",
+                    "elementType": "geometry",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "administrative.country",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{"visibility": "on"}]
+                },
+                {
+                    "featureType": "administrative.country",
+                    "elementType": "labels.text",
+                    "stylers": [ {"hue": "#fff600"}]
+                },
+                {
+                    "featureType": "landscape",
+                    "elementType": "all"
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": [
+                    {"visibility": "off"}]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": [{"saturation": -100},{"lightness": 45}]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "all",
+                    "stylers": [ { "visibility": "off"}]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "labels.icon",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "on"}]
+                }
                 ]
             }
 
@@ -95,7 +99,7 @@
         var script = document.createElement('script');
         script.src = 'https://rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
-        
+
         }
 
         // Loop through the results array and place a marker for each
@@ -126,9 +130,9 @@
             position: latLng,
             icon: iconForLocation,
             map: map
-          });
-        }
+        });
       }
+  }
 
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 
@@ -140,4 +144,11 @@
      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>
 
 	</body>
+  </script>
+  
+</head>
+
+<body onload="initMap();">
+  <div id="map"></div>
+</body>
 </html>
