@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>GIS Research</title>
+
+		<style type="text/css">
+        	html, body, #map_canvas
+         	{
+        		height: 100%;
+        		margin: 0px;
+        		padding: 0px;
+        	}
+    	</style>
+    	<link rel="stylesheet" src="./boostrap/bootstrap.min.css"/>
+
+    	<script src="./libs/js/jQuery/jquery-1.11.1.min.js" type="text/javascript"></script>
+    	<script src="./bootstrap/bootstrap.min.js" type="text/javascript"></script>
+    	<script src="./libs/js/jQuery/plugins/jquery.cookie.js" type="text/javascript"></script>
+    	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=drawing"></script>
+
+
+
+    	<script>
+    	// The Coding starts here .....
+    	// All the coding will be done in javascript no HTML should make this a little more clearer
+
+    	/****************************************** GLOBAL PARAMETERS ...*********************************/
+    	var map; //the google map element
+    	var drawing = 1;
+        var drawingManager; // the drawing manager for the map..
+        var polygons = []; //This variable will hold on to all the polygons we draw
+        var polylines =[]; //Variable that will hold on to the polylines
+        var removing = 0; //Bool val that will be set to true if we want to remove an item
+        var infoWindow; //Variable that will hold on to the popup
+        var popupDiv;
+        var loadingImg; var doneImg;
+        var debugdata;
+
+    	/*****************************************  INITIALIZATION FUNCTION ******************************/
+    	window.onload = function(){
+    		//Call the functions here :::
+    		// var mapOptions = {
+    		// center: new google.maps.LatLng(40.7590615,-73.969231),  //The latlng centered at new york city
+    		// zoom:13
+    		// }
+
+            var mapOptions = {
+            center: new google.maps.LatLng(40.7590615,-73.969231),  //The latlng centered at new york city
+            zoom:12,
+            styles:[
+                    {
+                        "featureType": "administrative",
+                        "elementType": "labels.text.fill",
+                        "stylers": [ { "color": "#00ee00" },{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "geometry",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{"visibility": "on"}]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "labels.text",
+                        "stylers": [ {"hue": "#fff600"}]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "all",
+                        "stylers": [{"color": "#005566"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "all",
+                        "stylers": [
+                            {"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "all",
+                        "stylers": [{"saturation": -100},{"lightness": 45}]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "all",
+                        "stylers": [ { "visibility": "off"}]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels.icon",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "all",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "all",
+                        "stylers": [{"color": "#994422"},{"visibility": "on"}]
+                    }
+                ]
+            }
+    		map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+            infoWindow = new google.maps.InfoWindow(); //Initialize the info window
+
+    		//create functions
+    		create_controlDiv();
+            create_drawingManager();
+
+
+            //We need the array remove function to make our life easier taken from Stackoverflow
+            Array.prototype.remove = function(from, to) {
+                        var rest = this.slice((to || from) + 1 || this.length);
+                        this.length = from < 0 ? this.length + from : from;
+                    return this.push.apply(this, rest);
+            };
+    	}
+
+
+    	/***************************************** FUNCTIONS *********************************************/
+
+    	//Function to Create the control buttons....
+    	function create_controlDiv(){
+    		var controlDiv = document.createElement('div');
+
+    		//Set CSS styles for the DIV containing the controls
+    		controlDiv.style.padding = '5px';
+            controlDiv.style.paddingLeft = '0';
+            controlDiv.style.paddingRight = '0';
+            controlDiv.style.marginLeft = '5px';
+            controlDiv.style.marginRight = '5px';
+
+    		//Buttons for the control UI
+    		drawButton = document.createElement('button'); //This variable is to be used later --> GLOBAL
+            drawButton.className = 'btn btn-default';
+            drawButton.innerHTML = 'Disable Draw';
+
+    		var sendButton = document.createElement('button');
+            sendButton.className = 'btn btn-default';
+            sendButton.innerHTML = 'Send Coordinates';
+
+            var removeButton = document.createElement('button');
+            removeButton.className = 'btn btn-danger';
+            removeButton.innerHTML = 'Remove All';
+
+            var removeFigure = document.createElement('button');
+            removeFigure.className = 'btn btn-default';
+            removeFigure.innerHTML = 'Start Removing';
+            removeFigure.id = 'rm';
+
+
+    		controlDiv.appendChild(drawButton);
+    		controlDiv.appendChild(sendButton);
+            controlDiv.appendChild(removeFigure);
+            controlDiv.appendChild(removeButton);
+
+
+
+    		//Set the position of the controlDiv
+    		controlDiv.index = 1;
+    		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+
+
+            //Popup Div::::
+            popupDiv = document.createElement('div');
+            popupDiv.style.width='200px';
+            popupDiv.style.height='150px';
+            popupDiv.style.padding= '5px';
+            popupDiv.style.paddingLeft = '0';
+            popupDiv.style.paddingRight = '0';
+            popupDiv.style.paddingBottom = '0';
+            popupDiv.style.marginBottom = '0';
+            popupDiv.style.display = 'none';
+
+            var loadingDiv = document.createElement('div');
+
+            loadingImg = document.createElement('img');
+            loadingImg.src = "./resources/loading.gif";
+            loadingImg.style.width = '100%';
+            loadingImg.style.height = '100%';
+
+            loadingDiv.appendChild(loadingImg);
+            popupDiv.appendChild(loadingDiv);
+
+            //Position the popupDiv
+            popupDiv.index = 1;
+            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(popupDiv);
+
+    		//Events Handlers
+    		google.maps.event.addDomListener(sendButton,'click',function(){ send_coordinates();});
+    		google.maps.event.addDomListener(drawButton,'click',function(){ change_draw();})
+            google.maps.event.addDomListener(removeButton,'click',function(){remove_all();})
+            google.maps.event.addDomListener(removeFigure,'click',function(){remove_item();})
+    	}
+
+
+        //Create the drawing manager here :::
+        function create_drawingManager(){
+
+            //We need to create a line symbol in order to draw arrows::
+            var lineSymbol = {path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW};
+
+            google.maps.Polyline.prototype.icons = [{icon:lineSymbol, offset: '100%'}];
+
+
+            var drawingManagerOptions = {
+                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [google.maps.drawing.OverlayType.POLYGON,
+                        google.maps.drawing.OverlayType.POLYLINE]
+                }
+            };
+
+
+
+            drawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+            drawingManager.setMap(map);
+
+            //Event handlers for when they are done drawing the polygons
+            google.maps.event.addListener(drawingManager,'polygoncomplete', function(polygon)
+            {
+                polygons.push(polygon);
+            });
+
+            google.maps.event.addListener(drawingManager,'polylinecomplete',function(polyline)
+            {
+                //I could not find a way to force the polyline creation to make the arrow
+                //Therefore I make a duplicate polyline on top of the drawn polyline
+                //and then I delete the old polyline
+
+
+                //--------------------------- Point in polygon verification -------------------------------
+                var in1, in2;  //If in1 and in2 are both values other that -1 and undefined we know that
+                                //The vertices of the polyline are in different polygons
+                                //Also we assume that each line is determined by 2 vertices only
+                var vtx1 = polyline.getPath().getArray()[0].lng();
+                var vty1 = polyline.getPath().getArray()[0].lat();
+                var vtx2 = polyline.getPath().getArray()[1].lng();
+                var vty2 = polyline.getPath().getArray()[1].lat();
+
+                var i;
+                var source, dest = undefined; // Used to get the source and dest polygons
+                for(i = 0; i < polygons.length; i ++)
+                {
+                    if(point_in_polygon(vtx1,vty1,polygons[i]))
+                        {
+                            in1 = true; source = i; break;
+                        }
+                    else if(i === polygons.length -1){ in1 = false;}
+
+                }
+
+                for(var j =0; j < polygons.length; j++)
+                {
+                    if(j === i) continue; //We skip the polygon where the other vertex was :: we dont do paths in the same polygon
+
+                    if(point_in_polygon(vtx2,vty2,polygons[j]))
+                    {
+                        in2 = true; dest = j; break;
+                    }
+                    else if(j === polygons.length -1) {in2 = false;}
+                }
+
+
+                //---------------------------- End point in polygon verification --------------------------
+                polyline.setMap(null);
+
+                if(in1 && in2){
+                    polyline2 = new google.maps.Polyline({
+                        path: polyline.getPath(),
+                        icons: [{icon: lineSymbol, offset:'100%'}], //offset 100% to put the arrow in the front
+                        map: map,
+                        strokeWeight: 8
+                    });
+                    polyline2.psource = source; //Assign the polygon id that is source
+                    polyline2.pdest = dest;     // Assign the polygon id that is destination
+                    polylines.push(polyline2);
+                }
+            });
+        }
+
+
+    	//This function enables/disables drawing
+    	function change_draw(){
+            if(removing && !drawing){remove_item();} //we are removing
+
+    		if(drawing){
+    			drawButton.innerText = 'Enable Drawing';
+    			//Stop the drawing
+                drawingManager.setOptions({drawingControl: false, drawingMode: null});
+    			drawing = 0;
+    		}
+    		else{
+    			drawButton.innerText = 'Disable Drawing';
+    			//Start the drawing
+                drawingManager.setOptions({drawingControl: true, drawingMode: google.maps.drawing.OverlayType.POLYGON});
+    			drawing = 1;
+    		}
+    	}
+
+
+        //Helper for the remove function
+        var addListenersOnItem = function(item){
+            google.maps.event.addListener(item,'rightclick',function(event){
+                item.setMap(null);
+                item.tobedeleted = true;
+            });
+        }
+
+
+        function remove_item(){
+
+                removing = (!removing)? 1:0;
+
+                if(removing){
+                    $("#rm").text("End Removing");
+                    change_draw();
+
+                    for(var i = 0; i < polygons.length; i++)
+                    {
+                        var p = polygons[i];
+                        addListenersOnItem(p);
+                    }
+
+                    for(var i = 0; i < polylines.length; i++)
+                    {
+                        var p = polylines[i];
+                        addListenersOnItem(p);
+                    }
+
+                }
+                else{
+                    $("#rm").text("Start Removing");
+                    change_draw();
+
+                    for(var i=0; i < polygons.length; i++)
+                    {
+                        if(polygons[i].tobedeleted) {polygons.remove(i); i--; }
+                        else google.maps.event.clearListeners(polygons[i],'rightclick');
+                    }
+
+                    for(var i=0; i < polylines.length; i++)
+                    {
+                        if(polylines[i].tobedeleted) {polylines.remove(i); i--;}
+                        else google.maps.event.clearListeners(polylines[i],'rightclick');
+                    }
+
+                }
+        }
+
+
+        // ------------> Function to remove polygons
+        function remove_all(){
+
+            for(var i= polygons.length -1; i >= 0; i--)
+            {
+                polygons[i].setMap(null);
+                polygons.pop();
+            }
+
+            for(var i= polylines.length -1; i >= 0; i--)
+            {
+                polylines[i].setMap(null);
+                polylines.pop();
+            }
+
+        }
+
+
+        /*
+    	  ----------> Function to send the coordinates to the server
+        */
+    	function send_coordinates(){
+            if(removing){ remove_item()} //we are removing
+            change_draw(); //change draw should be on by this time. We disable it
+            var data = {}; //We will put the coordinates here..
+
+            //let's build the geojson
+            //I am building it the same way we used to have it
+            //that way the server code doesnt need to be changed
+            //Let's start by showing the loading div
+            $(popupDiv).show("clip");
+            data.type = "FeatureCollection";
+            data.vertices = [];
+
+    		for(var i=0; i < polygons.length;i++)
+            {
+                //Get the Path of the polygon
+                var vertices = polygons[i].getPath();
+
+                //Create the feature geojson entry
+                var feature = {};
+                    feature.type = "Vertex";
+                    //feature.id = i;
+                    feature.geometry = {};
+                    feature.geometry.type = "Polygon";
+                    feature.geometry.coordinates =[];
+                var coord = [];
+
+                //Get the vertices
+                for(var j = 0; j < vertices.length; j++)
+                {
+                    var xy = vertices.getAt(j);
+                    coord.push([xy.lat(),xy.lng()]);
+                }
+
+                coord.push(coord[0]); //the first coordinate should be the same as the last one
+                feature.geometry.coordinates.push(coord);
+
+
+                data.vertices.push(feature);
+            }
+
+
+            //Now let us process the edges:::
+            data.edges = [];
+            for(var i=0; i < polylines.length;i++)
+            {
+                var edge = {};
+                edge.src = polylines[i].psource;
+                edge.dst = polylines[i].pdest;
+
+                data.edges.push(edge);
+            }
+
+            var json_string = JSON.stringify(data);
+            console.log(json_string);
+
+
+            $.ajax({
+                url:"SocketClient.php",
+                data: {geojson:json_string},
+                success: function(json){
+                        //We start by taking off invalid characters in the json string
+                        var temp = json.replace(/[\u0000-\u0019]+/g,"");
+                        var jsondata = JSON.parse(temp);
+                        ajax_success(jsondata);
+                        $(popupDiv).hide("clip");
+                },
+                error: function (error){
+                        alert("Ooops something went wrong!");
+                }
+            });
+
+    	}
+
+
+        /*
+            AJAX SUCCESS FUNCTION
+         */
+        function ajax_success(json_response){
+            //Add the click listener to the polygons
+            //console.log(json_response);
+            var numpoints = json_response.numpoints;
+            var trips = json_response.trips;
+
+            for(var k =0 ; k < polygons.length; k++)
+            {
+                polygons[k].numpoints = numpoints[k];
+                //This is the event that will show the overlay on top of the polygons
+                google.maps.event.addListener(polygons[k],'click',function(event){
+                    //The number of points is returned in the order of the polygons
+                    //inside the polygons array...
+                    var contentString = '<h5>The number of points inside the polygon</h5>';
+                    contentString+= '<p style=\"text-align:center\">'
+                    contentString+= this.numpoints.toString();
+                    contentString+= '</p>';
+
+                    infoWindow.setContent(contentString);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+
+                });
+            }
+
+            //Do the polylines here
+            for(var l =0; l < polylines.length; l++)
+            {
+
+                var tptrips = trips[l]; //Temporary trips
+                 google.maps.event.addListener(polylines[l],'click',function(event){
+
+
+                    var contentString = '<h5>Trip information:</h5>';
+                    contentString+= "<p>Source Trips:  </p>" + tptrips.srctrips;
+                    contentString+= "<p>Destination Trips: </p>" + tptrips.dsttrips ;
+                    contentString+= "<p>Trip From Source to Destination: </p>" + tptrips.trips ;
+
+                    infoWindow.setContent(contentString);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+                });
+
+
+            }
+
+        }
+
+
+
+        /* ===================================== Point in polygon function ===================================== */
+        function point_in_polygon(vtx_x, vtx_y,polygon){
+
+            //We use the polygon and the point in polygon function provided by
+            //http://www.ecse.rpi.edu/~wrf/Research/Short_Notes/pnpoly.html
+            //by professor: W. Randolph Franklin
+
+            var vertices = polygon.getPath().getArray(); //Extract the vertices :::
+            var nvertices = vertices.length;
+            var i, j , c = 0;
+
+            // lat-> y && long->x
+            for(i=0, j = nvertices-1; i < nvertices; j = i++)
+            {
+                if ( ((vertices[i].lat()>vtx_y) != (vertices[j].lat()>vtx_y)) &&
+                    (vtx_x < (vertices[j].lng() - vertices[i].lng()) * (vtx_y - vertices[i].lat()) / (vertices[j].lat() - vertices[i].lat()) + vertices[i].lng()) )
+                    c = !c;
+            }
+
+            return c;
+
+        }
+    	</script>
+
+	</head>
+
+	<body>
+		<div id="map_canvas"></div>
+	</body>
+
+
+
+</html>
+
