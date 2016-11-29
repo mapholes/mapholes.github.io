@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GeoSoical Web Frontend</title>
+		<style type="text/css">
+        	html, body, #map_canvas
+         	{
+        		height: 100%;
+        		margin: 0px;
+        		padding: 0px;
+        	}
+    	</style>
+    	<link rel="stylesheet" src="./boostrap/bootstrap.min.css"/>
+    	<script src="./libs/js/jQuery/jquery-1.11.1.min.js" type="text/javascript"></script>
+    	<script src="./bootstrap/bootstrap.min.js" type="text/javascript"></script>
+    	<script src="./libs/js/jQuery/plugins/jquery.cookie.js" type="text/javascript"></script>
+    	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=drawing"></script>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    	<script>
+    	/****************************************** GLOBAL PARAMETERS ...*********************************/
+    	var map; //the google map element
+        var fusionLayer; //Fusion Table Layer
+        var layer_polygons;
+    	var drawing = 1;
+        var drawingManager; // the drawing manager for the map..
+        var polylines =[]; //Variable that will hold on to the polylines
+        var removing = 0; //Bool val that will be set to true if we want to remove an item
+        var infoWindow; //Variable that will hold on to the popup
+        var popupDiv;
+        var loadingImg; var doneImg;
+        var debugdata;
+        var json_polygons;
+        var dataMode = 1; //If data mode is 1 we are working with community district zone if 2 then Taxi zones
+        var taxi_zone = 'resources/taxizone.geojson';
+        var community_district = 'resources/cd.geojson';
+        var isEngineStarted = false;
+        var hourSelect;
+    	/*****************************************  INITIALIZATION FUNCTION ******************************/
+    	window.onload = function(){
+    		//Call the functions here :::
+    		var mapOptions = {
+    		center: new google.maps.LatLng(40.7590615,-73.969231),  //The latlng centered at new york city
+    		zoom:13,
+            styles:[
+                    {
+                        "featureType": "administrative",
+                        "elementType": "labels.text.fill",
+                        "stylers": [ { "color": "#444444" }]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "geometry",
+                        "stylers": [{"visibility": "on"}]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{"visibility": "on"}]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "labels.text",
+                        "stylers": [ {"hue": "#fff600"}]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "all",
+                        "stylers": [{"color": "#f2f2f2"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "all",
+                        "stylers": [
+                            {"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "all",
+                        "stylers": [{"saturation": -100},{"lightness": 45}]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "all",
+                        "stylers": [ { "visibility": "simplified"}]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels.icon",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "all",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "all",
+                        "stylers": [{"color": "#cad3d5"},{"visibility": "on"}]
+                    }
+                ]
+    		}
+    		map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+       		get_layerpolygons();
+            infoWindow = new google.maps.InfoWindow(); //Initialize the info window
+
+    		//create functions
+    		create_controlDiv();
+            create_drawingManager();
+            change_draw(); //Disabling the drawing::
+
+            //We need the array remove function to make our life easier taken from Stackoverflow
+            Array.prototype.remove = function(from, to) {
+                        var rest = this.slice((to || from) + 1 || this.length);
+                        this.length = from < 0 ? this.length + from : from;
+                        return this.push.apply(this, rest);
+            };
+
+            map.data.addListener('click',function(event)
+            {
+                if(event.feature.getProperty('selected') === 1)
+                {
+                    map.data.revertStyle(event.feature);
+                    event.feature.setProperty('selected',0);
+                }
+                else{
+                    //console.log(event.feature.getProperty('BoroCD'));
+                    map.data.overrideStyle(event.feature, {fillColor: "blue"});
+                    event.feature.setProperty('selected',1);
+                }
+
+                //console.log(event.feature.getProperty("pagerank"));
+
+                //console.log(event.feature.hasOwnProperty('pagerank'));
+                if(event.feature.getProperty('pagerank') != undefined)
+                {
+                    var contentString = "<p>rank:  " + event.feature.getProperty('pagerank') + "</p>";
+                    //console.log(contentString);
+                    infoWindow.setContent(contentString);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+                }
+
+            });
+    	}
+
+
+    	/***************************************** FUNCTIONS *********************************************/
+    	//Function to Create the control buttons....
+    	function create_controlDiv()
+    	{
+    		var controlDiv = document.createElement('div');
+    		//Set CSS styles for the DIV containing the controls
+    		controlDiv.style.padding = '5px';
+            controlDiv.style.paddingLeft = '0';
+            controlDiv.style.paddingRight = '0';
+            controlDiv.style.marginLeft = '5px';
+            controlDiv.style.marginRight = '5px';
+    		//Buttons for the control UI
+    		drawButton = document.createElement('button'); //This variable is to be used later --> GLOBAL
+            drawButton.className = 'btn btn-default';
+            drawButton.innerHTML = 'Disable Draw';
+    		var sendButton = document.createElement('button');
+            sendButton.className = 'btn btn-default';
+            sendButton.innerHTML = 'Send Data';
+
+            var removeButton = document.createElement('button');
+            removeButton.className = 'btn btn-danger';
+            removeButton.innerHTML = 'Remove All';
+            var removeFigure = document.createElement('button');
+            removeFigure.className = 'btn btn-default';
+            removeFigure.innerHTML = 'Remove Item';
+            removeFigure.id = 'rm';
+            var dataSelect = document.createElement('select');
+            var optiondata1 = document.createElement('option');
+            var optiondata2 = document.createElement('option');
+            optiondata1.setAttribute('value',community_district);
+            optiondata2.setAttribute('value',taxi_zone);
+            optiondata1.innerHTML = 'Community District';
+            optiondata2.innerHTML = 'Taxi Zone';
+            dataSelect.appendChild(optiondata1);
+            dataSelect.appendChild(optiondata2);
+            dataSelect.className = 'form-control';
+
+            hourSelect = document.createElement('select')
+
+            if (hourSelect) {
+                var el = document.createElement("option");
+                el.textContent = "tot";
+                el.value = "tot";
+                hourSelect.appendChild(el);
+                for (var i=0; i < 24; ++i){
+                    var opt = "h" + i;
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    hourSelect.appendChild(el);
+                }
+            }
+            hourSelect.className = 'form-control';
+
+            controlDiv.appendChild(dataSelect);
+            controlDiv.appendChild(hourSelect);
+    		controlDiv.appendChild(drawButton);
+    		controlDiv.appendChild(sendButton);
+            controlDiv.appendChild(removeFigure);
+            controlDiv.appendChild(removeButton);
+    		//Set the position of the controlDiv
+    		controlDiv.index = 1;
+    		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+            //Popup Div::::
+            popupDiv = document.createElement('div');
+            popupDiv.style.width='200px';
+            popupDiv.style.height='150px';
+            popupDiv.style.padding= '5px';
+            popupDiv.style.paddingLeft = '0';
+            popupDiv.style.paddingRight = '0';
+            popupDiv.style.paddingBottom = '0';
+            popupDiv.style.marginBottom = '0';
+            popupDiv.style.display = 'none';
+            var loadingDiv = document.createElement('div');
+            loadingImg = document.createElement('img');
+            loadingImg.src = "./resources/loading.gif";
+            loadingImg.style.width = '100%';
+            loadingImg.style.height = '100%';
+            loadingDiv.appendChild(loadingImg);
+            popupDiv.appendChild(loadingDiv);
+            //Position the popupDiv
+            popupDiv.index = 1;
+            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(popupDiv);
+    		//Events Handlers
+    		google.maps.event.addDomListener(sendButton,'click',function(){ send_pairs();});
+    		google.maps.event.addDomListener(drawButton,'click',function(){ change_draw();})
+            google.maps.event.addDomListener(removeButton,'click',function(){remove_all();})
+            google.maps.event.addDomListener(removeFigure,'click',function(){remove_item();})
+            google.maps.event.addDomListener(dataSelect,'change',function(){change_data(dataSelect.value);});
+            google.maps.event.addDomListener(hourSelect,'change',function(){change_data(dataSelect.value);});
+    	}
+
+        //Create the drawing manager here :::
+        function create_drawingManager()
+        {
+            //We need to create a line symbol in order to draw arrows::
+            var lineSymbol = {path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW};
+            google.maps.Polyline.prototype.icons = [{icon:lineSymbol, offset: '100%'}];
+            var drawingManagerOptions = {
+                drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [google.maps.drawing.OverlayType.POLYLINE]
+                }
+            };
+            drawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+            drawingManager.setMap(map);
+
+            google.maps.event.addListener(drawingManager,'polylinecomplete',function(polyline)
+            {
+                //--------------------------- Point in polygon verification -------------------------------
+                var in1, in2;  //If in1 and in2 are both values other that -1 and undefined we know that
+                                //The vertices of the polyline are in different polygons
+                                //Also we assume that each line is determined by 2 vertices only
+                var vtx1 = polyline.getPath().getArray()[0].lng();
+                var vty1 = polyline.getPath().getArray()[0].lat();
+                var vtx2 = polyline.getPath().getArray()[1].lng();
+                var vty2 = polyline.getPath().getArray()[1].lat();
+                var i;
+                var source, dest; // Used to get the source and dest polygons
+                in1 = false; in2 = false;
+                var p1 , p2; //Polygons so that we can highlight them
+
+                for(i = 0; i < json_polygons.length; i++)
+                {
+                    if(point_in_rectangle(vtx1,vty1,json_polygons[i]))
+                        {
+                            if(point_in_multipolygon(vtx1,vty1,json_polygons[i]))
+                            {
+                                in1 = true;
+                                (dataMode === 1)? source = json_polygons[i].getProperty('BoroCD') : source = json_polygons[i].getProperty('OBJECTID');
+                                p1=layer_polygons[i];
+                                break;
+                            }
+                        }
+                }
+                for(var j =0; j < json_polygons.length; j++)
+                {
+                    if(j === i) continue; //We skip the polygon where the other vertex was :: we dont do paths in the same polygon
+                    if(point_in_rectangle(vtx2,vty2,json_polygons[j]))
+                    {
+                        if(point_in_multipolygon(vtx2,vty2,json_polygons[j]))
+                        {
+                            in2 = true;
+                            (dataMode === 1)? dest = json_polygons[j].getProperty('BoroCD') : dest = json_polygons[j].getProperty('OBJECTID');
+                            p2=layer_polygons[j];
+                            break;
+                        }
+                    }
+                }
+                //---------------------------- End point in polygon verification --------------------------
+                polyline.setMap(null);
+                if(in1 && in2){
+                    var polyline2 = new google.maps.Polyline({
+                        path: polyline.getPath(),
+                        icons: [{icon: lineSymbol, offset:'100%'}], //offset 100% to put the arrow in the front
+                        map: map,
+                        strokeWeight: 8
+                    });
+                    polyline2.psource = source; //Assign the polygon id that is source
+                    polyline2.pdest = dest;     // Assign the polygon id that is destination
+                    polylines.push(polyline2);
+                    map.data.overrideStyle(p1,{fillColor: 'Yellow'});
+                    map.data.overrideStyle(p2,{fillColor: 'Yellow'});
+                }
+            });
+        }
+    	//This function enables/disables drawing
+    	function change_draw(){
+            if(removing && !drawing){remove_item();} //we are removing
+    		if(drawing){
+    			drawButton.innerText = 'Enable Drawing';
+    			//Stop the drawing
+                drawingManager.setOptions({drawingControl: false, drawingMode: null});
+    			drawing = 0;
+    		}
+    		else{
+    			drawButton.innerText = 'Disable Drawing';
+    			//Start the drawing
+                drawingManager.setOptions({drawingControl: true, drawingMode: google.maps.drawing.OverlayType.POLYLINE});
+    			drawing = 1;
+    		}
+    	}
+        //Helper for the remove function
+        var addListenersOnItem = function(item){
+            google.maps.event.addListener(item,'rightclick',function(event){
+                item.setMap(null);
+                item.tobedeleted = true;
+            });
+        }
+        function remove_item(){
+                removing = (!removing)? 1:0;
+                if(removing){
+                    $("#rm").text("End Removing");
+                    change_draw();
+                    for(var i = 0; i < polylines.length; i++)
+                    {
+                        var p = polylines[i];
+                        addListenersOnItem(p);
+                    }
+                }
+                else{
+                    $("#rm").text("Start Removing");
+                    change_draw();
+                    for(var i=0; i < polylines.length; i++)
+                    {
+                        if(polylines[i].tobedeleted) {polylines.remove(i); i--;}
+                        else google.maps.event.clearListeners(polylines[i],'rightclick');
+                    }
+                }
+        }
+        // ------------> Function to remove arrows
+        function remove_all()
+        {
+            for(var i= polylines.length -1; i >= 0; i--)
+            {
+                polylines[i].setMap(null);
+                polylines.pop();
+            }
+            layer_polygons.forEach(function(polygon){
+                map.data.revertStyle(polygon);
+                polygon.setProperty('selected',0);
+            });
+        }
+
+        /*
+    	  ----------> Function to send the coordinates to the server
+        */
+    	function send_pairs()
+    	{
+            if(removing){ remove_item()} //we are removing
+            change_draw(); //change draw should be on by this time. We disable it
+            var data = {}; //We will put the coordinates here..
+            //Let's start by showing the loading div
+            //$(popupDiv).show("clip");
+            data.type = "PairCollection";
+            data.pairs = [];
+            for(var i=0; i < polylines.length;i++)
+            {
+                var pair = {};
+                pair.src = polylines[i].psource;
+                pair.dst = polylines[i].pdest;
+                data.pairs.push(pair);
+            }
+            var json_string = JSON.stringify(data);
+            console.log(json_string);
+            var graph = "nyccdhourly";
+            if (dataMode == 1) graph = "nyccdhourly";
+            else graph = "nyctzhourly";
+            var queryURL = "http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=find_edge --graph " + graph;
+            /*
+            $.ajax({
+                url:"dump.php",
+                data: {geojson:json_string},
+                success: function(json){
+                        //We start by taking off invalid characters in the json string
+                        var temp = json.replace(/[\u0000-\u0019]+/g,"");
+                        var jsondata = JSON.parse(temp);
+                        ajax_success(jsondata);
+                        $(popupDiv).hide("clip");
+                },
+                error: function (error){
+                        alert("Ooops something went wrong!");
+                }
+            });
+            */
+            var numPolylines = polylines.length
+            console.log("numPolylines: " + numPolylines);
+
+            for (var key = 0; key < numPolylines; ++key) {
+            //polylines.forEach(function query_edge(key, value) {
+                var pair = data.pairs[key]; //Temporary trips
+                var currentURL = queryURL + " --src " + pair.src + " --targ " + pair.dst;
+                console.log(currentURL);
+                ajax_polyline(currentURL, polylines[key]);
+
+            }
+            console.log("done");
+    	}
+
+        function ajax_polyline(url, polyline) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(json){
+                    //console.log(polyline);
+                    var fields = json.links[0];
+                    var timeSelected = hourSelect.options[hourSelect.selectedIndex].value;
+                    //google.maps.event.addListener(polylines[key],'click',function(event){
+                    var contentString = '<h5>O/D Info:</h5>';
+                    contentString+= "<p>Source Trips:  </p>" + fields["source"];
+                    contentString+= "<p>Destination Trips: </p>" + fields["target"] ;
+                    contentString+= "<p>Trip From Source to Destination: </p>" + fields[timeSelected] ;
+                    //infoWindow.setContent(contentString);
+                    //infoWindow.setPosition(event.latLng);
+                    //infoWindow.open(map);
+                    //});
+                    createInfoWindow(polyline, contentString);
+                },
+                error: function (error){
+                        alert("Ooops something went wrong!");
+                }
+
+                });
+        }
+
+        function createInfoWindow(poly,content) {
+            console.log(poly);
+            google.maps.event.addListener(poly, 'click', function(event) {
+            console.log(content)
+            infoWindow.setContent(content);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+        });
+}
+
+
+        function ajax_success(json_response)
+        {
+            //Add the click listener to the polygons
+            console.log(json_response);
+            var pairs = json_response.pairs;
+            for(var l =0; l < polylines.length; l++)
+            {
+                var pair = pairs[l]; //Temporary trips
+                google.maps.event.addListener(polylines[l],'click',function(event){
+                    var contentString = '<h5>O/D Info:</h5>';
+                    contentString+= "<p>Source Trips:  </p>" + pair.srcID;
+                    contentString+= "<p>Destination Trips: </p>" + pair.dstID ;
+                    contentString+= "<p>Trip From Source to Destination: </p>" + pair.val ;
+                    infoWindow.setContent(contentString);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+                });
+            }
+        }
+        function point_in_polygon2(vtx_x,vtx_y,polygon)
+        {
+            var vertices = polygon;
+            var nvertices = vertices.length;
+            var i,j, c =0;
+            // lat-> y && long->x
+            for(i=0, j = nvertices-1; i < nvertices; j = i++)
+            {
+                if ( ((vertices[i][1]>vtx_y) != (vertices[j][1]>vtx_y)) &&
+                    (vtx_x < (vertices[j][0] - vertices[i][0]) * (vtx_y - vertices[i][1]) / (vertices[j][1] - vertices[i][1]) + vertices[i][0]))
+                    c = !c;
+            }
+            return c;
+        }
+        function point_in_rectangle(vtx_x,vtx_y, multipolygon)
+        {
+            var min_point = multipolygon.bbox.vtxbot;
+            var max_point = multipolygon.bbox.vtxtop;
+            return(vtx_x <= max_point.lng() && vtx_x >= min_point.lng() && vtx_y <= max_point.lat() && vtx_y >= min_point.lat())? 1 : 0;
+        }
+        function point_in_multipolygon(vtx_x,vtx_y, feature)
+        {
+            var geometry  = feature.geometry;
+            //Now it can either be a polygon or a multipolygon
+            if(geometry.type === "Polygon")
+            {
+                var polygon = geometry.coordinates[0];
+                if(point_in_polygon2(vtx_x,vtx_y, polygon))
+                    return 1;
+            }
+            else{
+                //It is a multipolygon here
+                var multipolygon = geometry.coordinates;
+                for(var p = 0; p < multipolygon.length; p++)
+                {
+                    var polygon = multipolygon[p][0]; //Extract the polygon
+                    if(point_in_polygon2(vtx_x,vtx_y,polygon))
+                        return 1;
+                }
+            }
+            return 0;
+        }
+        // ++++++++++++++++++++++++++ GET LAYER POLYGONS ++++++++++++++++++++++++++++++
+        /*
+            Change data Function ::::::
+            value is the location of the place for the ajax call
+        */
+        function change_data(value)
+        {
+            if (value === taxi_zone ) dataMode = 2;
+            if (value === community_district ) dataMode = 1;
+            erase_data();
+            get_layerpolygons();
+        }
+        function erase_data()
+        {
+            for(var i=0; i < layer_polygons.length; i++)
+            {
+                map.data.setStyle({});
+                map.data.remove(layer_polygons[i]);
+            }
+            remove_all();
+            google.maps.event.trigger(map,'resize'); //Refresh the map
+            return;
+        }
+        function get_layerpolygons(){
+            var link;
+            if(dataMode === 1) link = community_district;
+            if(dataMode === 2) link = taxi_zone;
+            $.ajax({
+                url: link,
+                dataType: "json",
+                success: function(json){
+                    json_polygons = json.features;
+                    layer_polygons = map.data.addGeoJson(json);
+                    //Get the bouding box for each polygon:
+                    for(var y = 0; y < json_polygons.length; y++)
+                    {
+                        create_bbox(json_polygons[y]);
+                        //Add a get property function while were at it
+                        json_polygons[y].getProperty = function(property){
+                            return this.properties[property];
+                        }
+                    }
+                    if(dataMode === 1) get_communitydistrict_info(); //This function is only applicable for community district Zones
+                    if(dataMode === 2) get_taxizone_info();
+                },
+                error: function(){
+                    alert("Error can't load initial polygons");
+                }
+            });
+        }
+        //Function to link the analytic betweeness and the layer polygons::
+        function get_communitydistrict_info()
+        {
+            {
+            var requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_stop_engine --graph nyccdhourly';
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "POST", requst, false );
+            xmlHttp.send( null );
+            //console.log(xmlHttp.resonse)
+            requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_stop_engine --graph nyctzhourly';
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "POST", requst, false );
+            xmlHttp.send( null );
+            //console.log(xmlHttp.resonseText)
+            }
+            var hour = hourSelect.options[hourSelect.selectedIndex].value;
+            var requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_start_engine --graph nyccdhourly --edgeweightpropname ' + hour;
+            //if (!isEngineStarted) {
+                //WARNING: main thread is blocked due to sync call to the URL
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "POST", requst, false );
+                xmlHttp.send( null );
+                //console.log(xmlHttp.resonse)
+            //    isEngineStarted = true;
+            //}
+            //console.log(requst)
+
+            $.ajax({
+                url: 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_pagerank --graph nyccdhourly --display  --edgeweightpropname ' + hour,
+                type: 'GET',
+                dataType: 'json',
+                success: function(json){
+                    var nodes = json.results;
+                    debugdata = json;
+                    //Extract the maximum and the minimum values
+                    var min = 1.0, max = 0;
+                    json.results.forEach(function(item){
+                        var rank = Number(item.PR)
+                        if (isNaN(rank)) {
+                            item.PR = 0;
+                            rank = 0;
+                        }
+                        min = Math.min(rank, min)
+                        max = Math.max(rank, max)
+                    });
+
+                    console.log("minmax: " + min + " " + max)
+
+                    //Setup a color scale from min to max
+                    var color_scale = d3.scale.linear().domain([min,max]).range(['green','red']);
+                    //Assign the values and the colors to the polygons
+                    layer_polygons.forEach(function(element){
+                        for(var i=0; i < nodes.length; i++)
+                            if(Number(nodes[i].id) === element.getProperty('BoroCD'))
+                            {
+                                element.setProperty('pagerank',nodes[i].PR);
+                                element.setProperty('selected',0);
+                            }
+                    });
+
+                    map.data.setStyle(function(feature){
+                                   return ({
+                                    fillColor: color_scale(feature.getProperty('pagerank'))
+                                    });
+                                });
+                },
+                error: function(){
+                    alert("Error! Can't load the information json");
+                }
+            });
+        }
+        //We use this function if we have info to parse for the taxi zone
+        function get_taxizone_info()
+        {
+            {
+            var requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_stop_engine --graph nyccdhourly';
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "POST", requst, false );
+            xmlHttp.send( null );
+            console.log(xmlHttp.resonse)
+            requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_stop_engine --graph nyctzhourly';
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "POST", requst, false );
+            xmlHttp.send( null );
+            console.log(xmlHttp.resonse)
+
+            }
+            var hour = hourSelect.options[hourSelect.selectedIndex].value;
+            var requst = 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_start_engine --graph nyctzhourly --edgeweightpropname ' + hour
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "POST", requst, false );
+            xmlHttp.send( null );
+            console.log(xmlHttp.resonseText)
+
+            //isEngineStarted = true;
+
+
+            $.ajax({
+                url: 'http://134.74.112.65/ibmjsa/geosocial/SocketClient.php?cmd=analytic_pagerank --graph nyctzhourly --display  --edgeweightpropname ' + hour,
+                type: 'GET',
+                dataType: 'json',
+                success: function(json){
+                    var nodes = json.results;
+                    debugdata = json;
+                    //Extract the maximum and the minimum values
+                    var min = 1.0, max = 0;
+                    json.results.forEach(function(item){
+                        var rank = Number(item.PR)
+                        if (isNaN(rank)) {
+                            item.PR = 0;
+                            rank = 0;
+                        }
+                        min = Math.min(rank, min)
+                        max = Math.max(rank, max)
+                    });
+                    console.log("minmax: " + min + " " + max)
+
+                    //Setup a color scale from min to max
+                    var color_scale = d3.scale.linear().domain([min,max]).range(['green','red']);
+                    //Assign the values and the colors to the polygons
+                    layer_polygons.forEach(function(element){
+                        for(var i=0; i < nodes.length; i++)
+                            if(Number(nodes[i].id) === element.getProperty('OBJECTID'))
+                            {
+                                if (isNaN(Number(nodes[i].PR)))
+                                    element.setProperty('pagerank', 0);
+                                else
+                                    element.setProperty('pagerank', nodes[i].PR);
+
+                                element.setProperty('selected',0);
+                            }
+
+                        });
+
+
+
+                    map.data.setStyle(function(feature){
+                                   return ({
+                                    fillColor: color_scale(feature.getProperty('pagerank'))
+                                    });
+                                });
+
+
+                },
+                error: function(){
+                    alert("Error! Can't load the information json");
+                }
+            });
+        }
+        function create_bbox(feature){
+            var geometry = feature.geometry;
+            var max_lat, max_lng, min_lat, min_lng; //These will be used to get the bounding box:::
+            // A geometry here can either be a polygon or a multipolygon:::
+            if(geometry.type === "Polygon")
+            {
+                var polygon = geometry.coordinates[0];
+                for(var c =0; c < polygon.length; c++)
+                {
+                		var coord = polygon[c];
+                        if(c === 0){ max_lat = min_lat = Number(coord[1]); min_lng = max_lng = Number(coord[0]); continue;}
+                        if(coord[1] > max_lat) max_lat = Number(coord[1]);
+                        else if(coord[1] < min_lat) min_lat = Number(coord[1]);
+                        if(coord[0] > max_lng) max_lng = Number(coord[0]);
+                        else if(coord[0] < min_lng) min_lng = Number(coord[0]);
+                 }
+            }
+            else{
+                var multipolygon = geometry.coordinates;
+                for(var p =0; p < multipolygon.length; p++)
+                {
+                    var polygon = multipolygon[p][0];
+                    for(var c =0; c < polygon.length; c++)
+                    {
+                        var coord = polygon[c];
+                        if( p === 0 && c === 0){ max_lat = min_lat = Number(coord[1]); min_lng = max_lng = Number(coord[0]); continue;}
+                        if(coord[1] > max_lat) max_lat = Number(coord[1]);
+                        else if(coord[1] < min_lat) min_lat = Number(coord[1]);
+                        if(coord[0] > max_lng) max_lng = Number(coord[0]);
+                        else if(coord[0] < min_lng) min_lng = Number(coord[0]);
+                    }
+                }
+            }
+            feature.bbox = {vtxtop: new google.maps.LatLng(max_lat,max_lng), vtxbot: new google.maps.LatLng(min_lat,min_lng)};
+        }
+    	</script>
+	</head>
+	<body>
+		<div id="map_canvas"></div>
+	</body>
+</html>
