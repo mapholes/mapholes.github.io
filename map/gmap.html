@@ -93,7 +93,7 @@
 
         // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
-        script.src = 'https://rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
+        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
         }
@@ -112,6 +112,9 @@
               },
               low_priority: {
                 icon: iconBase + 'low_priority.png'
+              },
+              company: {
+                icon: iconBase + 'companyIcon.png'
               }
             };
         for (var i = 0; i < results.features.length; i++) {
@@ -120,8 +123,11 @@
           var iconForLocation;
           if (results.features[i].properties.status == 'Open')
             iconForLocation = icons['high_priority'].icon
+          else if (results.features[i].properties.status == 'Company')
+            iconForLocation = icons['company'].icon
+           
           else
-            iconForLocation = icons['medium_priority'].icon
+            iconForLocation = icons['low_priority'].icon
 
           var marker = new google.maps.Marker({
             position: latLng,
