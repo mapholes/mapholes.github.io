@@ -94,7 +94,7 @@
 
              
             directionsDisplay = new google.maps.DirectionsRenderer({
-                //suppressMarkers: true
+                suppressMarkers: true
             });
 
             map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -158,7 +158,6 @@
             iconForLocation = icons['company'].icon;
             start = latLng;
             end = latLng;
-            createMarker(start, iconForLocation)
           }
            
           else{
@@ -168,6 +167,8 @@
                 stopover: true
              });
           }
+           createMarker(latLng, iconForLocation)
+
       }
     var request = {
         origin: start,
