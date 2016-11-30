@@ -5,37 +5,9 @@ eqfeed_callback({
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ -73.99981636,40.59550796 ]
-    },
-    "properties": {
-    "uniquekey":16199863,
-    "complainttype":"Sewer",
-    "zipcode":11214,
-    "address":"1628 SHORE PARKWAY",
-    "streetname":"SHORE PARKWAY",
-    "street1":"BELT PARKWAY EASTBOUND EXIT",
-    "street2":"BELT PARKWAY EB EN BAY PKWY",
-    "intersectionstreet1":"",
-    "intersectionstreet2":"",
-    "addresstype":"ADDRESS",
-    "city":"BROOKLYN",
-    "status":"Company",
-    "lastupdated":"3/12/10 11:12",
-    "borough":"BROOKLYN",
-    "xcoordinate":984301,
-    "ycoordinate":156236,
-    "location":"(40.595507957046316, -73.99981635877681)"
-    }
-  },
-  {
-    "type": "Feature",
-    "geometry": {
-       "type": "Point",
        "coordinates":  [ -73.9959453,40.59867264 ]
     },
     "properties": {
-    "uniquekey":16077845,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"143 BAY   31 STREET",
     "streetname":"BAY   31 STREET",
@@ -45,6 +17,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"3/2/10 12:30",
     "borough":"BROOKLYN",
@@ -60,8 +33,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97782714,40.6035865 ]
     },
     "properties": {
-    "uniquekey":20864244,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -71,6 +42,7 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 5 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"3/8/16 18:10",
     "borough":"BROOKLYN",
@@ -86,8 +58,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98792542,40.62134408 ]
     },
     "properties": {
-    "uniquekey":24016202,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"6101 18 AVENUE",
     "streetname":"18 AVENUE",
@@ -97,8 +67,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
-    "status":"Open",
-    "lastupdated":"9/13/12 02:15",
+    "priority":"Medium",
+    "status":"Closed",
+    "lastupdated":"9/13/12 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":987602,
     "ycoordinate":165649,
@@ -112,8 +83,6 @@ eqfeed_callback({
        "coordinates":  [ -73.9989592,40.60602327 ]
     },
     "properties": {
-    "uniquekey":24087883,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1935 85 STREET",
     "streetname":"85 STREET",
@@ -123,8 +92,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"7/29/16 03:00",
+    "lastupdated":"7/29/16 3:00",
     "borough":"BROOKLYN",
     "xcoordinate":984539,
     "ycoordinate":160067,
@@ -138,8 +108,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99450911,40.59131926 ]
     },
     "properties": {
-    "uniquekey":15668243,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1824 SHORE PARKWAY",
     "streetname":"SHORE PARKWAY",
@@ -149,6 +117,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"1/21/10 13:30",
     "borough":"BROOKLYN",
@@ -164,8 +133,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98314092,40.5958855 ]
     },
     "properties": {
-    "uniquekey":15668392,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -175,7 +142,8 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 12 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
-    "status":"Open",
+    "priority":"Low",
+    "status":"Closed",
     "lastupdated":"4/16/10 12:15",
     "borough":"BROOKLYN",
     "xcoordinate":988932,
@@ -190,8 +158,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00002161,40.60938565 ]
     },
     "properties": {
-    "uniquekey":15831629,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"",
     "streetname":"",
@@ -201,8 +167,9 @@ eqfeed_callback({
     "intersectionstreet2":"82 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"10/12/12 02:45",
+    "lastupdated":"10/12/12 2:45",
     "borough":"BROOKLYN",
     "xcoordinate":984244,
     "ycoordinate":161292,
@@ -216,8 +183,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98995426,40.61604134 ]
     },
     "properties": {
-    "uniquekey":15840238,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"6802 19 AVENUE",
     "streetname":"19 AVENUE",
@@ -227,6 +192,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"1/29/10 10:40",
     "borough":"BROOKLYN",
@@ -242,8 +208,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99698558,40.60754934 ]
     },
     "properties": {
-    "uniquekey":34374882,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"190 82 STREET",
     "streetname":"82 STREET",
@@ -253,6 +217,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"BLOCKFACE",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Open",
     "lastupdated":"",
     "borough":"BROOKLYN",
@@ -268,8 +233,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00824318,40.60305585 ]
     },
     "properties": {
-    "uniquekey":15920037,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"",
     "streetname":"",
@@ -279,8 +242,9 @@ eqfeed_callback({
     "intersectionstreet2":"CROPSEY AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
-    "lastupdated":"3/26/10 09:50",
+    "lastupdated":"3/26/10 9:50",
     "borough":"BROOKLYN",
     "xcoordinate":981961,
     "ycoordinate":158986,
@@ -294,8 +258,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99018072,40.61913199 ]
     },
     "properties": {
-    "uniquekey":15920020,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -305,6 +267,7 @@ eqfeed_callback({
     "intersectionstreet2":"65 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"2/2/10 14:22",
     "borough":"BROOKLYN",
@@ -320,8 +283,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00791635,40.61043389 ]
     },
     "properties": {
-    "uniquekey":16077844,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"1564 86 STREET",
     "streetname":"86 STREET",
@@ -331,6 +292,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"3/2/10 13:30",
     "borough":"BROOKLYN",
@@ -346,8 +308,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00791635,40.61043389 ]
     },
     "properties": {
-    "uniquekey":16085428,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"1564 86 STREET",
     "streetname":"86 STREET",
@@ -357,6 +317,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"2/25/10 14:00",
     "borough":"BROOKLYN",
@@ -372,8 +333,6 @@ eqfeed_callback({
        "coordinates":  [ -73.9959453,40.59867264 ]
     },
     "properties": {
-    "uniquekey":16085429,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"143 BAY   31 STREET",
     "streetname":"BAY   31 STREET",
@@ -383,6 +342,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"2/25/10 14:00",
     "borough":"BROOKLYN",
@@ -398,8 +358,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99981636,40.59550796 ]
     },
     "properties": {
-    "uniquekey":16094391,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1628 SHORE PARKWAY",
     "streetname":"SHORE PARKWAY",
@@ -409,8 +367,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"9/18/12 03:30",
+    "lastupdated":"9/18/12 3:30",
     "borough":"BROOKLYN",
     "xcoordinate":984301,
     "ycoordinate":156236,
@@ -424,8 +383,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99204506,40.60182346 ]
     },
     "properties": {
-    "uniquekey":16611180,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2252 85 STREET",
     "streetname":"85 STREET",
@@ -435,6 +392,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"5/8/10 13:15",
     "borough":"BROOKLYN",
@@ -450,8 +408,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99204506,40.60182346 ]
     },
     "properties": {
-    "uniquekey":16663920,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2252 85 STREET",
     "streetname":"85 STREET",
@@ -461,8 +417,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"5/14/10 02:15",
+    "lastupdated":"5/14/10 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":986459,
     "ycoordinate":158537,
@@ -476,8 +433,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99105236,40.61964808 ]
     },
     "properties": {
-    "uniquekey":16314136,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"1766 65 STREET",
     "streetname":"65 STREET",
@@ -487,8 +442,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
-    "lastupdated":"9/15/12 03:30",
+    "lastupdated":"9/15/12 3:30",
     "borough":"BROOKLYN",
     "xcoordinate":986734,
     "ycoordinate":165031,
@@ -502,8 +458,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98569231,40.62013062 ]
     },
     "properties": {
-    "uniquekey":18497264,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -513,6 +467,7 @@ eqfeed_callback({
     "intersectionstreet2":"61 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"11/23/13 11:00",
     "borough":"BROOKLYN",
@@ -528,8 +483,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99086273,40.61028832 ]
     },
     "properties": {
-    "uniquekey":18506386,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"2036 75 STREET",
     "streetname":"75 STREET",
@@ -539,6 +492,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"3/28/12 18:30",
     "borough":"BROOKLYN",
@@ -554,8 +508,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01591511,40.60869011 ]
     },
     "properties": {
-    "uniquekey":18672163,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"8797 14 AVENUE",
     "streetname":"14 AVENUE",
@@ -565,8 +517,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"10/14/12 06:00",
+    "lastupdated":"10/14/12 6:00",
     "borough":"BROOKLYN",
     "xcoordinate":979831,
     "ycoordinate":161039,
@@ -580,8 +533,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98334214,40.6120167 ]
     },
     "properties": {
-    "uniquekey":18813953,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"6804 BAY PARKWAY",
     "streetname":"BAY PARKWAY",
@@ -591,8 +542,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"9/10/12 05:00",
+    "lastupdated":"9/10/12 5:00",
     "borough":"BROOKLYN",
     "xcoordinate":988875,
     "ycoordinate":162251,
@@ -606,8 +558,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99649852,40.62392202 ]
     },
     "properties": {
-    "uniquekey":18863594,
-    "complainttype":"Sewer",
     "zipcode":11219,
     "address":"",
     "streetname":"",
@@ -617,6 +567,7 @@ eqfeed_callback({
     "intersectionstreet2":"64 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"10/19/10 11:15",
     "borough":"BROOKLYN",
@@ -632,8 +583,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99778115,40.61817446 ]
     },
     "properties": {
-    "uniquekey":19091680,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"1618 71 STREET",
     "streetname":"71 STREET",
@@ -643,6 +592,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"11/9/10 12:15",
     "borough":"BROOKLYN",
@@ -658,8 +608,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98794038,40.59837289 ]
     },
     "properties": {
-    "uniquekey":19324435,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"",
     "streetname":"",
@@ -669,6 +617,7 @@ eqfeed_callback({
     "intersectionstreet2":"86 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"12/11/10 22:30",
     "borough":"BROOKLYN",
@@ -684,8 +633,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99649852,40.62392202 ]
     },
     "properties": {
-    "uniquekey":19365637,
-    "complainttype":"Sewer",
     "zipcode":11219,
     "address":"",
     "streetname":"",
@@ -695,6 +642,7 @@ eqfeed_callback({
     "intersectionstreet2":"64 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"12/16/10 12:10",
     "borough":"BROOKLYN",
@@ -710,8 +658,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98938849,40.61768267 ]
     },
     "properties": {
-    "uniquekey":19547058,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"1873 66 STREET",
     "streetname":"66 STREET",
@@ -721,6 +667,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"11/6/13 13:25",
     "borough":"BROOKLYN",
@@ -736,8 +683,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00804962,40.61052446 ]
     },
     "properties": {
-    "uniquekey":19740232,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"",
     "streetname":"",
@@ -747,6 +692,7 @@ eqfeed_callback({
     "intersectionstreet2":"86 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"3/28/12 18:15",
     "borough":"BROOKLYN",
@@ -762,8 +708,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98538633,40.60275055 ]
     },
     "properties": {
-    "uniquekey":19782897,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -773,6 +717,7 @@ eqfeed_callback({
     "intersectionstreet2":"HIGHLAWN AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"11/25/13 13:00",
     "borough":"BROOKLYN",
@@ -788,8 +733,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98585878,40.61652124 ]
     },
     "properties": {
-    "uniquekey":18721116,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -799,6 +742,7 @@ eqfeed_callback({
     "intersectionstreet2":"65 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"3/26/12 16:20",
     "borough":"BROOKLYN",
@@ -814,8 +758,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98853039,40.60154045 ]
     },
     "properties": {
-    "uniquekey":22953655,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2361 83 STREET",
     "streetname":"83 STREET",
@@ -825,6 +767,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"3/7/16 11:00",
     "borough":"BROOKLYN",
@@ -840,8 +783,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99603927,40.59288386 ]
     },
     "properties": {
-    "uniquekey":19908895,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1752 SHORE PARKWAY",
     "streetname":"SHORE PARKWAY",
@@ -851,8 +792,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"6/7/12 03:30",
+    "lastupdated":"6/7/12 3:30",
     "borough":"BROOKLYN",
     "xcoordinate":985350,
     "ycoordinate":155280,
@@ -866,8 +808,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00648705,40.61601414 ]
     },
     "properties": {
-    "uniquekey":20794698,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"1450 79 STREET",
     "streetname":"79 STREET",
@@ -877,6 +817,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"4/3/15 19:30",
     "borough":"BROOKLYN",
@@ -892,8 +833,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99186995,40.59078387 ]
     },
     "properties": {
-    "uniquekey":21277272,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2568 CROPSEY AVENUE",
     "streetname":"CROPSEY AVENUE",
@@ -903,8 +842,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"5/29/12 08:00",
+    "lastupdated":"5/29/12 8:00",
     "borough":"BROOKLYN",
     "xcoordinate":986508,
     "ycoordinate":154515,
@@ -918,8 +858,6 @@ eqfeed_callback({
        "coordinates":  [ -74.0129253,40.60585512 ]
     },
     "properties": {
-    "uniquekey":23213181,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"244 BAY   11 STREET",
     "streetname":"BAY   11 STREET",
@@ -929,8 +867,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
-    "lastupdated":"6/14/12 09:00",
+    "lastupdated":"6/14/12 9:00",
     "borough":"BROOKLYN",
     "xcoordinate":980661,
     "ycoordinate":160006,
@@ -944,8 +883,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97392115,40.60931682 ]
     },
     "properties": {
-    "uniquekey":28181715,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"2525 65 STREET",
     "streetname":"65 STREET",
@@ -955,6 +892,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"6/5/14 12:30",
     "borough":"BROOKLYN",
@@ -970,8 +908,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98935199,40.59814521 ]
     },
     "properties": {
-    "uniquekey":28723305,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"30 BAY   37 STREET",
     "streetname":"BAY   37 STREET",
@@ -981,6 +917,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"8/28/14 10:10",
     "borough":"BROOKLYN",
@@ -996,8 +933,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00608965,40.60304501 ]
     },
     "properties": {
-    "uniquekey":29113586,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"194 BAY   19 STREET",
     "streetname":"BAY   19 STREET",
@@ -1007,6 +942,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"3/8/16 18:10",
     "borough":"BROOKLYN",
@@ -1022,8 +958,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97850289,40.59639526 ]
     },
     "properties": {
-    "uniquekey":23893524,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1033,6 +967,7 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 7 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"8/18/13 12:10",
     "borough":"BROOKLYN",
@@ -1048,8 +983,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00118127,40.60736547 ]
     },
     "properties": {
-    "uniquekey":23999425,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1819 85 STREET",
     "streetname":"85 STREET",
@@ -1059,6 +992,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"9/14/12 20:00",
     "borough":"BROOKLYN",
@@ -1074,8 +1008,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98538633,40.60275055 ]
     },
     "properties": {
-    "uniquekey":23762810,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1085,8 +1017,9 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 13 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"8/7/12 02:15",
+    "lastupdated":"8/7/12 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":988308,
     "ycoordinate":158875,
@@ -1100,8 +1033,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98951658,40.60485077 ]
     },
     "properties": {
-    "uniquekey":25035234,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2228 80 STREET",
     "streetname":"80 STREET",
@@ -1111,8 +1042,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"12/2/15 00:30",
+    "lastupdated":"12/2/15 0:30",
     "borough":"BROOKLYN",
     "xcoordinate":987161,
     "ycoordinate":159640,
@@ -1126,8 +1058,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99189633,40.61073306 ]
     },
     "properties": {
-    "uniquekey":25051124,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"7506 20 AVENUE",
     "streetname":"20 AVENUE",
@@ -1137,6 +1067,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"4/26/15 10:05",
     "borough":"BROOKLYN",
@@ -1152,8 +1083,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97938008,40.60100119 ]
     },
     "properties": {
-    "uniquekey":25305355,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1163,6 +1092,7 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 7 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"4/10/13 11:30",
     "borough":"BROOKLYN",
@@ -1178,8 +1108,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99384616,40.59614184 ]
     },
     "properties": {
-    "uniquekey":25413652,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"",
     "streetname":"",
@@ -1189,6 +1117,7 @@ eqfeed_callback({
     "intersectionstreet2":"BAY 35 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"4/24/13 11:35",
     "borough":"BROOKLYN",
@@ -1204,8 +1133,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99001172,40.61712828 ]
     },
     "properties": {
-    "uniquekey":26083639,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"1870 67 STREET",
     "streetname":"67 STREET",
@@ -1215,6 +1142,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"7/25/13 11:04",
     "borough":"BROOKLYN",
@@ -1230,8 +1158,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01208716,40.61122403 ]
     },
     "properties": {
-    "uniquekey":27071261,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"58 BAY    7 STREET",
     "streetname":"BAY    7 STREET",
@@ -1241,8 +1167,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"1/6/14 08:00",
+    "lastupdated":"1/6/14 8:00",
     "borough":"BROOKLYN",
     "xcoordinate":980894,
     "ycoordinate":161962,
@@ -1256,8 +1183,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99995318,40.60844693 ]
     },
     "properties": {
-    "uniquekey":26439100,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1829 83 STREET",
     "streetname":"83 STREET",
@@ -1267,8 +1192,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
-    "lastupdated":"10/24/13 09:35",
+    "lastupdated":"10/24/13 9:35",
     "borough":"BROOKLYN",
     "xcoordinate":984263,
     "ycoordinate":160950,
@@ -1282,8 +1208,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98399563,40.60541007 ]
     },
     "properties": {
-    "uniquekey":26570682,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1293,6 +1217,7 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 11 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"11/18/13 21:30",
     "borough":"BROOKLYN",
@@ -1308,8 +1233,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98823286,40.61424059 ]
     },
     "properties": {
-    "uniquekey":27561165,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -1319,8 +1242,9 @@ eqfeed_callback({
     "intersectionstreet2":"20 AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"3/6/14 05:00",
+    "lastupdated":"3/6/14 5:00",
     "borough":"BROOKLYN",
     "xcoordinate":987517,
     "ycoordinate":163061,
@@ -1334,8 +1258,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99737478,40.60131866 ]
     },
     "properties": {
-    "uniquekey":27774744,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2115 BENSON AVENUE",
     "streetname":"BENSON AVENUE",
@@ -1345,8 +1267,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"4/3/14 06:15",
+    "lastupdated":"4/3/14 6:15",
     "borough":"BROOKLYN",
     "xcoordinate":984979,
     "ycoordinate":158353,
@@ -1360,8 +1283,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97679522,40.59887897 ]
     },
     "properties": {
-    "uniquekey":28726792,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"220 AVENUE T",
     "streetname":"AVENUE T",
@@ -1371,6 +1292,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"9/25/14 13:00",
     "borough":"BROOKLYN",
@@ -1386,8 +1308,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00361567,40.60404697 ]
     },
     "properties": {
-    "uniquekey":30040315,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"113 BAY   20 STREET",
     "streetname":"BAY   20 STREET",
@@ -1397,6 +1317,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"4/18/15 22:00",
     "borough":"BROOKLYN",
@@ -1412,8 +1333,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01264036,40.60354403 ]
     },
     "properties": {
-    "uniquekey":30138141,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"307 BAY   13 STREET",
     "streetname":"BAY   13 STREET",
@@ -1423,6 +1342,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"3/10/15 15:05",
     "borough":"BROOKLYN",
@@ -1438,8 +1358,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97905843,40.61612496 ]
     },
     "properties": {
-    "uniquekey":30704631,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -1449,8 +1367,9 @@ eqfeed_callback({
     "intersectionstreet2":"BAY PARKWAY",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"5/26/15 09:25",
+    "lastupdated":"5/26/15 9:25",
     "borough":"BROOKLYN",
     "xcoordinate":990064,
     "ycoordinate":163748,
@@ -1464,8 +1383,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00006483,40.61397769 ]
     },
     "properties": {
-    "uniquekey":29751190,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1677 77 STREET",
     "streetname":"77 STREET",
@@ -1475,6 +1392,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"1/20/15 20:00",
     "borough":"BROOKLYN",
@@ -1490,8 +1408,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01562625,40.60551443 ]
     },
     "properties": {
-    "uniquekey":29815361,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"8895 15 AVENUE",
     "streetname":"15 AVENUE",
@@ -1501,6 +1417,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"2/19/15 11:50",
     "borough":"BROOKLYN",
@@ -1516,8 +1433,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99336337,40.59888936 ]
     },
     "properties": {
-    "uniquekey":29872638,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"",
     "streetname":"",
@@ -1527,6 +1442,7 @@ eqfeed_callback({
     "intersectionstreet2":"BENSON AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"2/5/15 14:00",
     "borough":"BROOKLYN",
@@ -1542,8 +1458,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99018072,40.61913199 ]
     },
     "properties": {
-    "uniquekey":31399238,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -1553,8 +1467,9 @@ eqfeed_callback({
     "intersectionstreet2":"18 AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"8/27/15 04:00",
+    "lastupdated":"8/27/15 4:00",
     "borough":"BROOKLYN",
     "xcoordinate":986976,
     "ycoordinate":164843,
@@ -1568,8 +1483,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98995426,40.61604134 ]
     },
     "properties": {
-    "uniquekey":15840236,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"6802 19 AVENUE",
     "streetname":"19 AVENUE",
@@ -1579,8 +1492,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
-    "lastupdated":"6/29/16 05:45",
+    "lastupdated":"6/29/16 5:45",
     "borough":"BROOKLYN",
     "xcoordinate":987039,
     "ycoordinate":163717,
@@ -1594,8 +1508,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97408445,40.59688292 ]
     },
     "properties": {
-    "uniquekey":16921738,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1605,8 +1517,9 @@ eqfeed_callback({
     "intersectionstreet2":"AVENUE U",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"7/5/16 03:00",
+    "lastupdated":"7/5/16 3:00",
     "borough":"BROOKLYN",
     "xcoordinate":991447,
     "ycoordinate":156738,
@@ -1620,8 +1533,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00830559,40.61256931 ]
     },
     "properties": {
-    "uniquekey":19588891,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"",
     "streetname":"",
@@ -1631,6 +1542,7 @@ eqfeed_callback({
     "intersectionstreet2":"15 AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"6/7/11 10:53",
     "borough":"BROOKLYN",
@@ -1646,8 +1558,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00725742,40.61199023 ]
     },
     "properties": {
-    "uniquekey":19589137,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"1540 84 STREET",
     "streetname":"84 STREET",
@@ -1657,8 +1567,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"6/29/16 02:30",
+    "lastupdated":"6/29/16 2:30",
     "borough":"BROOKLYN",
     "xcoordinate":982235,
     "ycoordinate":162241,
@@ -1672,8 +1583,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98938849,40.61768267 ]
     },
     "properties": {
-    "uniquekey":19645077,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"1873 66 ST",
     "streetname":"66 ST",
@@ -1683,8 +1592,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"1/20/11 02:15",
+    "lastupdated":"1/20/11 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":987196,
     "ycoordinate":164315,
@@ -1698,8 +1608,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01628238,40.60834147 ]
     },
     "properties": {
-    "uniquekey":19818619,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"8821 14 AVE",
     "streetname":"14 AVE",
@@ -1709,6 +1617,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"3/6/11 11:12",
     "borough":"BROOKLYN",
@@ -1724,8 +1633,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00992164,40.60501276 ]
     },
     "properties": {
-    "uniquekey":19892692,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"BAY 14 ST",
     "streetname":"BAY 14 ST",
@@ -1735,6 +1642,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"BLOCKFACE",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"2/24/11 19:45",
     "borough":"BROOKLYN",
@@ -1750,8 +1658,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98630115,40.60222915 ]
     },
     "properties": {
-    "uniquekey":20103448,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1761,6 +1667,7 @@ eqfeed_callback({
     "intersectionstreet2":"STILLWELL AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
     "lastupdated":"3/25/11 11:40",
     "borough":"BROOKLYN",
@@ -1776,8 +1683,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98806653,40.61785272 ]
     },
     "properties": {
-    "uniquekey":20178968,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -1787,8 +1692,9 @@ eqfeed_callback({
     "intersectionstreet2":"19 AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"4/5/11 02:15",
+    "lastupdated":"4/5/11 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":987563,
     "ycoordinate":164377,
@@ -1802,8 +1708,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98806653,40.61785272 ]
     },
     "properties": {
-    "uniquekey":20261442,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"",
     "streetname":"",
@@ -1813,6 +1717,7 @@ eqfeed_callback({
     "intersectionstreet2":"19 AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"4/18/11 18:00",
     "borough":"BROOKLYN",
@@ -1828,8 +1733,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98617581,40.61621935 ]
     },
     "properties": {
-    "uniquekey":20319951,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"20 AVE",
     "streetname":"20 AVE",
@@ -1839,6 +1742,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"BLOCKFACE",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
     "lastupdated":"4/27/11 14:30",
     "borough":"BROOKLYN",
@@ -1854,8 +1758,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98375827,40.60409528 ]
     },
     "properties": {
-    "uniquekey":20499949,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"1754 W 11 ST",
     "streetname":"W 11 ST",
@@ -1865,8 +1767,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"6/7/11 09:55",
+    "lastupdated":"6/7/11 9:55",
     "borough":"BROOKLYN",
     "xcoordinate":988760,
     "ycoordinate":159365,
@@ -1880,8 +1783,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97782714,40.6035865 ]
     },
     "properties": {
-    "uniquekey":20967429,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -1891,8 +1792,9 @@ eqfeed_callback({
     "intersectionstreet2":"WEST 5 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"8/3/11 02:15",
+    "lastupdated":"8/3/11 2:15",
     "borough":"BROOKLYN",
     "xcoordinate":990407,
     "ycoordinate":159180,
@@ -1906,8 +1808,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99764454,40.61069215 ]
     },
     "properties": {
-    "uniquekey":21495500,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"1827 79 STREET",
     "streetname":"79 STREET",
@@ -1917,6 +1817,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Closed",
     "lastupdated":"9/22/11 20:30",
     "borough":"BROOKLYN",
@@ -1932,8 +1833,6 @@ eqfeed_callback({
        "coordinates":  [ -73.98499488,40.59798279 ]
     },
     "properties": {
-    "uniquekey":21672422,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"AVENUE T",
     "streetname":"AVENUE T",
@@ -1943,8 +1842,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"BLOCKFACE",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Closed",
-    "lastupdated":"10/17/11 09:56",
+    "lastupdated":"10/17/11 9:56",
     "borough":"BROOKLYN",
     "xcoordinate":988417,
     "ycoordinate":157138,
@@ -1958,8 +1858,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97808013,40.61182094 ]
     },
     "properties": {
-    "uniquekey":26171683,
-    "complainttype":"Sewer",
     "zipcode":11204,
     "address":"2339 65 STREET",
     "streetname":"65 STREET",
@@ -1969,8 +1867,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"7/7/16 04:30",
+    "lastupdated":"7/7/16 4:30",
     "borough":"BROOKLYN",
     "xcoordinate":990336,
     "ycoordinate":162180,
@@ -1984,8 +1883,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01208716,40.61122403 ]
     },
     "properties": {
-    "uniquekey":27060958,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"58 BAY 7 STREET",
     "streetname":"BAY 7 STREET",
@@ -1995,6 +1892,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Started",
     "lastupdated":"1/6/14 11:20",
     "borough":"BROOKLYN",
@@ -2010,8 +1908,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00830559,40.61256931 ]
     },
     "properties": {
-    "uniquekey":30011240,
-    "complainttype":"Sewer",
     "zipcode":11228,
     "address":"",
     "streetname":"",
@@ -2021,6 +1917,7 @@ eqfeed_callback({
     "intersectionstreet2":"84 STREET",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Started",
     "lastupdated":"2/22/15 16:00",
     "borough":"BROOKLYN",
@@ -2036,8 +1933,6 @@ eqfeed_callback({
        "coordinates":  [ -74.01305468,40.60444153 ]
     },
     "properties": {
-    "uniquekey":30011893,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"8879 16 AVENUE",
     "streetname":"16 AVENUE",
@@ -2047,6 +1942,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Started",
     "lastupdated":"2/22/15 10:40",
     "borough":"BROOKLYN",
@@ -2062,8 +1958,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99393724,40.62419365 ]
     },
     "properties": {
-    "uniquekey":30362729,
-    "complainttype":"Sewer",
     "zipcode":11219,
     "address":"1568 62 STREET",
     "streetname":"62 STREET",
@@ -2073,8 +1967,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"High",
     "status":"Closed",
-    "lastupdated":"10/20/15 03:50",
+    "lastupdated":"10/20/15 3:50",
     "borough":"BROOKLYN",
     "xcoordinate":985933,
     "ycoordinate":166687,
@@ -2088,8 +1983,6 @@ eqfeed_callback({
        "coordinates":  [ -74.00736511,40.60874862 ]
     },
     "properties": {
-    "uniquekey":30437035,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"42 BAY   13 STREET",
     "streetname":"BAY   13 STREET",
@@ -2099,8 +1992,9 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Started",
-    "lastupdated":"4/20/15 08:45",
+    "lastupdated":"4/20/15 8:45",
     "borough":"BROOKLYN",
     "xcoordinate":982205,
     "ycoordinate":161060,
@@ -2114,8 +2008,6 @@ eqfeed_callback({
        "coordinates":  [ -73.99172413,40.60527365 ]
     },
     "properties": {
-    "uniquekey":32558124,
-    "complainttype":"Sewer",
     "zipcode":11214,
     "address":"2166 81 STREET",
     "streetname":"81 STREET",
@@ -2125,6 +2017,7 @@ eqfeed_callback({
     "intersectionstreet2":"",
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
+    "priority":"Low",
     "status":"Started",
     "lastupdated":"1/29/16 11:45",
     "borough":"BROOKLYN",
@@ -2140,8 +2033,6 @@ eqfeed_callback({
        "coordinates":  [ -73.97782714,40.6035865 ]
     },
     "properties": {
-    "uniquekey":32614813,
-    "complainttype":"Sewer",
     "zipcode":11223,
     "address":"",
     "streetname":"",
@@ -2151,6 +2042,7 @@ eqfeed_callback({
     "intersectionstreet2":"HIGHLAWN AVENUE",
     "addresstype":"INTERSECTION",
     "city":"BROOKLYN",
+    "priority":"Medium",
     "status":"Started",
     "lastupdated":"2/6/16 13:00",
     "borough":"BROOKLYN",
