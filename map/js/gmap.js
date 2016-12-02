@@ -1,31 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>GIS Term Project | Group 6</title>
-    <style type="text/css">
-    html, body, #map
-    {
-      height: 99%;
-      margin: 0px;
-      padding: 0px;
-    }
-    </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-</head>
-
-<body onload="initMap();">
-    <div id="map">
-    </div>
-    <div id="travel_data"></div>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>
-
-    <script>
-        var map; //the google map element
+ var map; //the google map element
         var directionDisplay;
         var directionsService = new google.maps.DirectionsService();
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -165,12 +138,13 @@
         // document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-    function createMarker(latlng, iconForLocation) {
+    function createMarker(latlng, iconForLocation,label) {
         var marker = new google.maps.Marker({
             position: latlng,
             // label: labels[labelIndex++ % labels.length],
             icon: iconForLocation,
-            map: map
+            map: map,
+            title: label
         });
     }
 
@@ -205,7 +179,7 @@
 
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
-
+        var label = results.features[i].properties.complainttype;
         // alert('LatLng: '+latLng);
         var iconForLocation;
 
@@ -230,7 +204,7 @@
                 stopover: true
             });
         }
-        createMarker(latLng, iconForLocation)
+        createMarker(latLng, iconForLocation, label)
 
     }
 
@@ -265,10 +239,3 @@
 
       // var drawingManager = new google.maps.drawing.DrawingManager();
       //   drawingManager.setMap(map);
-
-      </script>
-
-
-  </body>
-
-</html>
