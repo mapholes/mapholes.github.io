@@ -133,7 +133,8 @@
 
         // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
-        script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
+        // script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
+        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
     }
