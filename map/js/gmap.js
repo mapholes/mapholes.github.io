@@ -7,7 +7,7 @@
         function initMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(40.604050, -74.000557), 
-                zoom:11,
+                zoom:13,
                 styles:[
                 {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
                 {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
@@ -181,7 +181,7 @@
     var company = new google.maps.LatLng(40.687917, -73.980670);
     createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png');
 
-    for (var i = 0; i < results.features.length && i < 10; i++) {
+    for (var i = 0; i < results.features.length; i++) {
 
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
