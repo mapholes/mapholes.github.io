@@ -3,7 +3,9 @@
         var directionsService = new google.maps.DirectionsService();
         var waypts = [];
         var marker ;
-        
+        var tableHTML = '<table><tr><th>Key</th><th>Type</th><th>Location</th><th>Tools Required</th><th>Estimated Time</th></tr>';
+
+
         function initMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(40.604050, -74.000557), 
@@ -199,7 +201,17 @@
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
         var label = results.features[i].properties.complainttype;
-        // alert('LatLng: '+latLng);
+        
+        tableHTML += '<tr><td>'+i+'</td><td>'
+                  + results.features[i].properties.complainttype 
+                  + '</td><td>'
+                  + results.features[i].properties.address + ',' + results.features[i].properties.city
+                  + '</td><td>'
+                  + results.features[i].properties.ToolsRequired
+                  + '</td><td>'
+                  + results.features[i].properties.EstimatedTime
+                  + '</td></tr>';
+
         var iconForLocation;
 
         if (results.features[i].properties.priority == 'High'){
@@ -216,6 +228,8 @@
         createMarker(latLng, iconForLocation, label);
     }
 
+    tableHTML += '</table>';
+    $('#infoTable').html(tableHTML);
 
     $('#submitButton').click(function() {
         directionsService.route({
@@ -245,6 +259,8 @@
         });
 
     });
+
+
 }
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 
