@@ -1,25 +1,157 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<title>Coming Soon to a Browser Near You</title>		
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="css/comingSoon.css" />
-	<link href="https://fonts.googleapis.com/css?family=Ravi+Prakash" rel="stylesheet">	
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <title>GIS Term Project | Group 6</title>
+        <link rel="stylesheet" href="map/css/gmap.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        <link href="https://fonts.googleapis.com/css?family=Rakkas|PT+Sans" rel="stylesheet">
 
-	<div class="container text-center">
-		<a href="https://mapholes.github.io/"><h1 class="text-center" id="head-logo">MapHoles</h1></a>
-		<h1></h1>			
-	</div>
-	<div class="container-fluid construction center">
-		<img src="img/cone.png" class="img-responsive media-middle cone-icon">
-	</div>
-	<div class="container text-center">
-		<h2>Coming  Soon</h2>
-	</div>
+    </head>
 
-</body>
+    <body onload="initMap();">
+        <div id="map"></div>
+        <button id="HomeStartButton" class="btn btn-info">Start!</button>
+
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>    
+    	<script type="text/javascript">
+
+
+
+			function initMap() {
+	            var mapOptions = {
+	                center: new google.maps.LatLng(40.604050, -74.000557), 
+	                zoom:10,
+	                styles:[
+	                {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+	                {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
+	                {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
+	                {
+	                  featureType: 'administrative',
+	                  elementType: 'geometry.stroke',
+	                  stylers: [{color: '#c9b2a6'}]
+	                },
+	                {
+	                  featureType: 'administrative.land_parcel',
+	                  elementType: 'geometry.stroke',
+	                  stylers: [{color: '#dcd2be'}]
+	                },
+	                {
+	                  featureType: 'administrative.land_parcel',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#ae9e90'}]
+	                },
+	                {
+	                  featureType: 'landscape.natural',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#dfd2ae'}]
+	                },
+	                {
+	                  featureType: 'poi',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#dfd2ae'}]
+	                },
+	                {
+	                  featureType: 'poi',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#93817c'}]
+	                },
+	                {
+	                  featureType: 'poi.park',
+	                  elementType: 'geometry.fill',
+	                  stylers: [{color: '#a5b076'}]
+	                },
+	                {
+	                  featureType: 'poi.park',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#447530'}]
+	                },
+	                {
+	                  featureType: 'road',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#f5f1e6'}]
+	                },
+	                {
+	                  featureType: 'road.arterial',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#fdfcf8'}]
+	                },
+	                {
+	                  featureType: 'road.highway',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#f8c967'}]
+	                },
+	                {
+	                  featureType: 'road.highway',
+	                  elementType: 'geometry.stroke',
+	                  stylers: [{color: '#e9bc62'}]
+	                },
+	                {
+	                  featureType: 'road.highway.controlled_access',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#e98d58'}]
+	                },
+	                {
+	                  featureType: 'road.highway.controlled_access',
+	                  elementType: 'geometry.stroke',
+	                  stylers: [{color: '#db8555'}]
+	                },
+	                {
+	                  featureType: 'road.local',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#806b63'}]
+	                },
+	                {
+	                  featureType: 'transit.line',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#dfd2ae'}]
+	                },
+	                {
+	                  featureType: 'transit.line',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#8f7d77'}]
+	                },
+	                {
+	                  featureType: 'transit.line',
+	                  elementType: 'labels.text.stroke',
+	                  stylers: [{color: '#ebe3cd'}]
+	                },
+	                {
+	                  featureType: 'transit.station',
+	                  elementType: 'geometry',
+	                  stylers: [{color: '#dfd2ae'}]
+	                },
+	                {
+	                  featureType: 'water',
+	                  elementType: 'geometry.fill',
+	                  stylers: [{color: '#b9d3c2'}]
+	                },
+	                {
+	                  featureType: 'water',
+	                  elementType: 'labels.text.fill',
+	                  stylers: [{color: '#92998d'}]
+	                }
+	                ]
+	            }
+
+
+	            directionsDisplay = new google.maps.DirectionsRenderer({
+	                suppressMarkers: true
+	            });
+
+	            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	            
+
+	            $(document).ready(function(){
+
+	    			$('#HomeStartButton').click(function(){
+						// setTimeout(function(){$('#HomeStartButton').hide('slow')}, 30000);
+						$('#HomeStartButton').hide('slow');
+						setTimeout(function(){window.location.href = "https://mapholes.github.io/map/"}, 1000);
+					})
+				});
+		    }
+    	</script>
+    </body>    
 </html>

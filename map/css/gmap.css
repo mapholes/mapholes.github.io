@@ -105,3 +105,14 @@ html, body {
 	position: relative;
 	margin-left: 1px;
 }
+
+#HomeStartButton {
+	position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+	font-size: 20px;
+	width: 200px;
+	box-shadow: 0px 0px 89px 13px rgba(10,86,99,1);
+}

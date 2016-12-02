@@ -32,7 +32,7 @@ function toggleTable(){
 
 $(document).ready(function(){
   $('#infoTable').hide();
-  // $('#travel_data').hide();
+  $('#travel_data').hide();
 });
 
         function initMap() {
@@ -285,6 +285,7 @@ $(document).ready(function(){
       // alert(tableHTML);
       $('#infoTable').html(tableHTML);
       $('#infoTable').show('normal');
+      $('#travel_data').show('slow');
 
         directionsService.route({
             origin: "30 Flatbush Ave, Brooklyn, NY 11217",
