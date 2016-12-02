@@ -20,7 +20,7 @@ eqfeed_callback({
     "addresstype":"ADDRESS",
     "city":"BROOKLYN",
     "priority":"High",
-    "status":"Closed",
+    "status":"Company",
     "lastupdated":"3/2/10 12:30",
     "borough":"BROOKLYN",
     "xcoordinate":985376,
