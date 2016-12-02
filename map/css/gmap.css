@@ -1,6 +1,6 @@
 html, body, #map
 {
-  height: 99%;
+  height: 100%;
   margin: 0px;
   padding: 0px;
 }
@@ -10,7 +10,17 @@ html, body, #map
 	position: fixed;
 	right: 5px;
 	top: 5px;
-	background-color: green;
-	color: white;
-	width: 100px;
+	font-weight: bold;
+/*	background-color: green;
+	color: white;*/
+}
+
+#travel_data {
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+	 height:200px;
+	 overflow-x: scroll;
+	 box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
+	background-color: white;
 }

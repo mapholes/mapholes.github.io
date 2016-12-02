@@ -172,10 +172,23 @@
             title: label
         });
 
+        var infowindow = new google.maps.InfoWindow({
+          content: label
+        });
+
         marker.addListener('click', function(event) {
           addSelectedPoint(latlng);
           marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png"); 
         });
+
+        marker.addListener('mouseover', function() {
+        infowindow.open(map, marker);
+        });
+
+        marker.addListener('mouseout', function() {
+          infowindow.close();
+        });
+
     }
 
     var company = new google.maps.LatLng(40.687917, -73.980670);
