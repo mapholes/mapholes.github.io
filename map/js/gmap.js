@@ -3,8 +3,37 @@
         var directionsService = new google.maps.DirectionsService();
         var waypts = [];
         var marker ;
-        var tableHTML = '<table><tr><th>Key</th><th>Type</th><th>Location</th><th>Tools Required</th><th>Estimated Time</th></tr>';
+        var key = 1;
+        var toggle = 0;
+        var totalEstimatedTime = 0;
+        var totalWorkTime = 0;
+        var tableHTML = '<div id="tableHeader" title="Hide Table" onClick="toggleTable();" style="background-color: #DD8324;color: SADDLEBROWN;border-radius: 5px 5px 0px 0px; height: 16px;"><span id="arrow" style="text-align: left; font-size: 12">▶</span> <span style="text-align: center; width:990px;"></span></div>';
+        tableHTML += '<table><tr><th>Key</th><th>Type</th><th>Location</th><th>Tools Required</th><th>Estimated Time</th></tr>';
 
+function toggleTable(){
+
+  if (toggle == 0) {
+    toggle = 1
+    $('#arrow').text('◀')
+    $('#tableHeader').attr('title', 'Show Table')
+    $('#infoTable').animate({
+            right : "-985px"
+        }, 'fast');   
+  } else {
+    toggle = 0
+    $('#arrow').text('▶')
+    $('#tableHeader').attr('title', 'Hide Table')
+    $('#infoTable').animate({
+            right : "5px"
+        }, 'fast');  
+
+  }
+}
+
+$(document).ready(function(){
+  $('#infoTable').hide();
+  // $('#travel_data').hide();
+});
 
         function initMap() {
             var mapOptions = {
@@ -134,7 +163,7 @@
         // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
         // script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
-        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
+        script.src = 'https://rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
     }
@@ -167,7 +196,7 @@
             });
     }
 
-    function createMarker(latlng, iconForLocation,label) {
+    function createMarker(latlng, iconForLocation, label, complaintType, address, tools, estimatedTime, i) {
         var marker = new google.maps.Marker({
             position: latlng,
             icon: iconForLocation,
@@ -182,6 +211,22 @@
         marker.addListener('click', function(event) {
           addSelectedPoint(latlng);
           marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png"); 
+
+          tableHTML += '<tr><td>'
+          + key
+          + '</td><td>'
+          + complaintType 
+          + '</td><td>'
+          + address 
+          + '</td><td>'
+          + tools
+          + '</td><td>'
+          + estimatedTime
+          + '</td></tr>';
+
+          totalEstimatedTime += estimatedTime;
+          key += 1;
+
         });
 
         marker.addListener('mouseover', function() {
@@ -202,16 +247,20 @@
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
         var label = results.features[i].properties.complainttype;
-        
-        tableHTML += '<tr><td>'+i+'</td><td>'
-                  + results.features[i].properties.complainttype 
-                  + '</td><td>'
-                  + results.features[i].properties.address + ',' + results.features[i].properties.city
-                  + '</td><td>'
-                  + results.features[i].properties.ToolsRequired
-                  + '</td><td>'
-                  + results.features[i].properties.EstimatedTime
-                  + '</td></tr>';
+        var complaintType = results.features[i].properties.complainttype;
+        var address = results.features[i].properties.address + ' ' + results.features[i].properties.city;
+        var tools = results.features[i].properties.ToolsRequired;
+        var estimatedTime = results.features[i].properties.EstimatedTime;
+
+        // tableHTML += '<tr><td>'+i+'</td><td>'
+        //           + results.features[i].properties.complainttype 
+        //           + '</td><td>'
+        //           + results.features[i].properties.address + ',' + results.features[i].properties.city
+        //           + '</td><td>'
+        //           + results.features[i].properties.ToolsRequired
+        //           + '</td><td>'
+        //           + results.features[i].properties.EstimatedTime
+        //           + '</td></tr>';
 
         var iconForLocation;
 
@@ -226,13 +275,17 @@
         else{
             iconForLocation = icons['low_priority'].icon;
         }
-        createMarker(latLng, iconForLocation, label);
+        createMarker(latLng, iconForLocation, label, complaintType, address, tools, estimatedTime, i);
     }
 
-    tableHTML += '</table>';
-    $('#infoTable').html(tableHTML);
 
     $('#submitButton').click(function() {
+
+      tableHTML += '</table>';  
+      // alert(tableHTML);
+      $('#infoTable').html(tableHTML);
+      $('#infoTable').show('normal');
+
         directionsService.route({
             origin: "30 Flatbush Ave, Brooklyn, NY 11217",
             destination: "30 Flatbush Ave, Brooklyn, NY 11217",
@@ -246,14 +299,27 @@
                     var summaryPanel = document.getElementById('travel_data');
                     summaryPanel.innerHTML = '';
                     // For each route, display summary information.
+                    
+                    var totalDistance = 0;
+                    var totalTime = 0;
+
                     for (var i = 0; i < route.legs.length; i++) {
-                      var routeSegment = i + 1;
-                      summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                          '</b><br>';
-                      summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                      summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                      summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                      // var routeSegment = i + 1;
+
+                      totalTime += parseInt(route.legs[i].duration.text);
+                      // alert(route.legs[i].duration.text);                     
+                      totalDistance += parseFloat(route.legs[i].distance.text);
+                      // summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                      //     '</b><br>';
+                      // summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+                      // summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                      // summaryPanel.innerHTML += parseInt(route.legs[i].distance.text) + '<br><br>';
                     }
+                    totalWorkTime = (totalEstimatedTime + (totalTime/60)).toFixed(2);
+                    summaryPanel.innerHTML = '<p><b>Total Distance:</b> ' + totalDistance.toFixed(2) + ' mi</p>'
+                                           + '<p><b>Travel Time:</b> ' + (totalTime/60).toFixed(2) + ' hrs</p>'
+                                           + '<p><b>Total Estimated Work Time:</b> ' + totalEstimatedTime.toFixed(2) + ' hrs</p>'
+                                           + '<p><b>Total Time:</b> ' + totalWorkTime + ' hrs</p>';
                   } else {
                     window.alert('Directions request failed due to ' + status);
                   }
@@ -262,7 +328,10 @@
     });
 
 
+
 }
+
+
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 
       // var drawingManager = new google.maps.drawing.DrawingManager();

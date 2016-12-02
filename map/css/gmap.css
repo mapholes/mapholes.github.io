@@ -1,10 +1,13 @@
 html, body, #map
 {
-  height: 98%;
+  height: 100%;
   margin: 0px;
   padding: 0px;
 }
 
+html, body {
+	font-family: 'PT Sans', sans-serif;
+}
 
 #submitButton {
 	position: fixed;
@@ -17,19 +20,88 @@ html, body, #map
 
 #travel_data {
 	position: fixed;
-	right: 5px;
+	left: 5px;
 	bottom: 5px;
-	 height:200px;
-	 overflow-x: scroll;
-	 box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
-	background-color: white;
+	max-height:200px;
+	max-width: 300px;
+	padding: 5px;
+	/*overflow-x: scroll;*/
+	border-radius: 10px 10px 10px 10px;
+	box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
+	background-color: #222;
+	color: #DD8324;
+}
+
+#tableHeader:hover {
+	cursor: pointer;
 }
 
 #infoTable {
-	/*position: fixed;*/
-	/*right: 5px;*/
-	/*top: 15px;*/
+	position: fixed;
+	right: 5px;
+	/*top: 100px;*/
+	bottom: 5px;
+	max-width: 1000px;
+	/*height: 400px;*/
+	overflow-y: scroll;
+    /*white-space: nowrap;*/
 	 /*overflow-x: scroll;*/
-	 box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
+	box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
 	background-color: white;
+	display: none;
+}
+
+#infoTable, table {
+	text-align: left;
+	/*max-height: 400px;*/
+	/*overflow: hidden;*/
+	overflow-y: scroll;
+	/*margin: 0 auto;*/
+	display: table;
+	color: white;
+	table-layout: fixed;
+}
+
+#infoTable td, .infoTable th {
+	padding-bottom: 2%;
+	padding-top: 2%;
+	padding-left:2%;  
+}
+
+/* Background-color of the odd rows */
+#infoTable tr:nth-child(odd) {
+	background-color: #323C50;
+}
+
+/* Background-color of the even rows */
+#infoTable tr:nth-child(even) {
+	background-color: #2C3446;
+}
+
+#infoTable th {
+	background-color: #1F2739;
+	text-align: center;
+}
+
+#infoTable td:first-child , th { 
+	text-align: center;
+	color: #DD8324;  
+	/*color: white;*/
+	/*width: 160px;*/
+	font-weight: bold;
+}
+
+#infoTable td.first-child
+{
+    width:35px;
+}
+
+#infoTable td.second-child
+{
+    width:75px;
+}
+
+#arrow {
+	position: relative;
+	margin-left: 1px;
 }
