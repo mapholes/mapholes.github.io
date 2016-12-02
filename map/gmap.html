@@ -1,98 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>GIS Term Project | Group 6</title>
-  <style type="text/css">
-  html, body, #map
-  {
+    <meta charset="utf-8">
+    <title>GIS Term Project | Group 6</title>
+    <style type="text/css">
+    html, body, #map
+    {
       height: 99%;
       margin: 0px;
       padding: 0px;
-  }
-  </style>
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-	</head>
+    }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+</head>
 
-	<body onload="initMap();">
+<body onload="initMap();">
     <div id="map">
     </div>
+    <div id="travel_data"></div>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>
-
-  <script>
-    	var map; //the google map element
+    <script>
+        var map; //the google map element
         var directionDisplay;
         var directionsService = new google.maps.DirectionsService();
 
         function initMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(40.604050, -74.000557), 
-                zoom:13,
+                zoom:11,
                 styles:[
+                {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+                {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
+                {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
                 {
-                    "featureType": "administrative",
-                    "elementType": "labels.text.fill",
-                    "stylers": [ { "color": "#00ee00" },{"visibility": "off"}]
+                  featureType: 'administrative',
+                  elementType: 'geometry.stroke',
+                  stylers: [{color: '#c9b2a6'}]
                 },
                 {
-                    "featureType": "administrative.country",
-                    "elementType": "geometry",
-                    "stylers": [{"visibility": "off"}]
+                  featureType: 'administrative.land_parcel',
+                  elementType: 'geometry.stroke',
+                  stylers: [{color: '#dcd2be'}]
                 },
                 {
-                    "featureType": "administrative.country",
-                    "elementType": "geometry.stroke",
-                    "stylers": [{"visibility": "on"}]
+                  featureType: 'administrative.land_parcel',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#ae9e90'}]
                 },
                 {
-                    "featureType": "administrative.country",
-                    "elementType": "labels.text",
-                    "stylers": [ {"hue": "#fff600"}]
+                  featureType: 'landscape.natural',
+                  elementType: 'geometry',
+                  stylers: [{color: '#dfd2ae'}]
                 },
                 {
-                    "featureType": "landscape",
-                    "elementType": "all"
+                  featureType: 'poi',
+                  elementType: 'geometry',
+                  stylers: [{color: '#dfd2ae'}]
                 },
                 {
-                    "featureType": "poi",
-                    "elementType": "all",
-                    "stylers": [
-                    {"visibility": "off"}]
+                  featureType: 'poi',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#93817c'}]
                 },
                 {
-                    "featureType": "road",
-                    "elementType": "all",
-                    "stylers": [{"saturation": -100},{"lightness": 45}]
+                  featureType: 'poi.park',
+                  elementType: 'geometry.fill',
+                  stylers: [{color: '#a5b076'}]
                 },
                 {
-                    "featureType": "road.highway",
-                    "elementType": "all",
-                    "stylers": [ { "visibility": "off"}]
+                  featureType: 'poi.park',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#447530'}]
                 },
                 {
-                    "featureType": "road.arterial",
-                    "elementType": "labels.icon",
-                    "stylers": [{"visibility": "off"}]
+                  featureType: 'road',
+                  elementType: 'geometry',
+                  stylers: [{color: '#f5f1e6'}]
                 },
                 {
-                    "featureType": "transit",
-                    "elementType": "all",
-                    "stylers": [{"visibility": "off"}]
+                  featureType: 'road.arterial',
+                  elementType: 'geometry',
+                  stylers: [{color: '#fdfcf8'}]
                 },
                 {
-                    "featureType": "water",
-                    "elementType": "all",
-                    "stylers": [{"visibility": "on"}]
+                  featureType: 'road.highway',
+                  elementType: 'geometry',
+                  stylers: [{color: '#f8c967'}]
+                },
+                {
+                  featureType: 'road.highway',
+                  elementType: 'geometry.stroke',
+                  stylers: [{color: '#e9bc62'}]
+                },
+                {
+                  featureType: 'road.highway.controlled_access',
+                  elementType: 'geometry',
+                  stylers: [{color: '#e98d58'}]
+                },
+                {
+                  featureType: 'road.highway.controlled_access',
+                  elementType: 'geometry.stroke',
+                  stylers: [{color: '#db8555'}]
+                },
+                {
+                  featureType: 'road.local',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#806b63'}]
+                },
+                {
+                  featureType: 'transit.line',
+                  elementType: 'geometry',
+                  stylers: [{color: '#dfd2ae'}]
+                },
+                {
+                  featureType: 'transit.line',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#8f7d77'}]
+                },
+                {
+                  featureType: 'transit.line',
+                  elementType: 'labels.text.stroke',
+                  stylers: [{color: '#ebe3cd'}]
+                },
+                {
+                  featureType: 'transit.station',
+                  elementType: 'geometry',
+                  stylers: [{color: '#dfd2ae'}]
+                },
+                {
+                  featureType: 'water',
+                  elementType: 'geometry.fill',
+                  stylers: [{color: '#b9d3c2'}]
+                },
+                {
+                  featureType: 'water',
+                  elementType: 'labels.text.fill',
+                  stylers: [{color: '#92998d'}]
                 }
                 ]
             }
 
-             
+
             directionsDisplay = new google.maps.DirectionsRenderer({
                 suppressMarkers: true
             });
@@ -105,15 +158,19 @@
         var script = document.createElement('script');
         script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
-        }
 
-        function createMarker(latlng, iconForLocation) {
-            var marker = new google.maps.Marker({
+        var script = document.createElement('script');
+        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/Company_geojson.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    function createMarker(latlng, iconForLocation) {
+        var marker = new google.maps.Marker({
             position: latlng,
             icon: iconForLocation,
             map: map
         });
-        }
+    }
 
 
         // Loop through the results array and place a marker for each
@@ -121,87 +178,84 @@
       window.eqfeed_callback = function(results) {
 
         var iconBase = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/';
-            var icons = {
-              high_priority: {
-                icon: iconBase + 'high_priority.png'
-              },
-              medium_priority: {
-                icon: iconBase + 'medium_priority.png'
-              },
-              low_priority: {
-                icon: iconBase + 'low_priority.png'
-              },
-              company: {
-                icon: iconBase + 'companyIcon.png'
-              }
-            };
+        var icons = {
+          high_priority: {
+            icon: iconBase + 'high_priority.png'
+        },
+        medium_priority: {
+            icon: iconBase + 'medium_priority.png'
+        },
+        low_priority: {
+            icon: iconBase + 'low_priority.png'
+        },
+        company: {
+            icon: iconBase + 'companyIcon.png'
+        }
+    };
 
-         var start, end;
-         var waypts = [];
+    var start, end;
+    var waypts = [];
 
-        for (var i = 0; i < results.features.length && i < 20; i++) {
+    for (var i = 0; i < results.features.length && i < 20; i++) {
 
-          var coords = results.features[i].geometry.coordinates;
-          var latLng = new google.maps.LatLng(coords[1],coords[0]);
+        var coords = results.features[i].geometry.coordinates;
+        var latLng = new google.maps.LatLng(coords[1],coords[0]);
 
-          var iconForLocation;
+        // alert('LatLng: '+latLng);
+        var iconForLocation;
 
-          if (results.features[i].properties.status == 'Open'){
-             iconForLocation = icons['high_priority'].icon;
-             waypts.push({
-                location: latLng,
-                stopover: true
-             });
-          }
+        if (results.features[i].properties.priority == 'High'){
+        iconForLocation = icons['high_priority'].icon;
+        waypts.push({
+        location: latLng,
+        stopover: true
+        });
+        }
 
-          else if (results.features[i].properties.status == 'Company'){
-            iconForLocation = icons['company'].icon;
-            start = latLng;
-            end = latLng;
-          }
-           
-          else{
+        else if (results.features[i].properties.type == 'Head Office'){
+        iconForLocation = icons['company'].icon;
+        start = latLng;
+        end = latLng;
+        }
+
+        else{
             iconForLocation = icons['low_priority'].icon;
             waypts.push({
                 location: latLng,
                 stopover: true
-             });
-          }
-           createMarker(latLng, iconForLocation)
-
-      }
-    var request = {
-        origin: start,
-        destination: end,
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.WALKING
-    };
-
-    directionsService.route(request, function (response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-            var route = response.routes[0].legs[0];
-            $( '#travel_data' ).html( 'Estimated travel time: ' + route.duration.text + ' (' + route.distance.text + ')' );
+            });
         }
-    });
-  }
+        createMarker(latLng, iconForLocation)
+
+    }
+
+var request = {
+    origin: start,
+    destination: end,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.DirectionsTravelMode.WALKING
+};
+
+// alert(request.toString());
+
+directionsService.route(request, function (response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+        var route = response.routes[0].legs[0];
+        $( '#travel_data' ).html( 'Estimated travel time: ' + route.duration.text + ' (' + route.distance.text + ')' );
+    }
+});
+}
 
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 
       // var drawingManager = new google.maps.drawing.DrawingManager();
       //   drawingManager.setMap(map);
 
-        </script>
+      </script>
 
 
-	</body>
-  </script>
-  
-</head>
+  </body>
 
-<body onload="initMap();">
-  <div id="map" style="height=300px; float:left;"></div>
-  <div id="travel_data">T</div>
-</body>
 </html>
