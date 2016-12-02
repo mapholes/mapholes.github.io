@@ -1,8 +1,9 @@
  var map; //the google map element
         var directionDisplay;
         var directionsService = new google.maps.DirectionsService();
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
+        var waypts = [];
+        var marker ;
+        
         function initMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(40.604050, -74.000557), 
@@ -133,21 +134,28 @@
         script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
-        // var script = document.createElement('script');
-        // script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/Company_geojson.js';
-        // document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    function addSelectedPoint(position){
+      waypts.push({
+                location: position,
+                stopover: true
+            });
     }
 
     function createMarker(latlng, iconForLocation,label) {
         var marker = new google.maps.Marker({
             position: latlng,
-            // label: labels[labelIndex++ % labels.length],
             icon: iconForLocation,
             map: map,
             title: label
         });
-    }
 
+        marker.addListener('click', function(event) {
+          addSelectedPoint(latlng);
+          
+        });
+    }
 
         // Loop through the results array and place a marker for each
       // set of coordinates.
@@ -169,13 +177,11 @@
         }
     };
 
-    var start, end;
-    var waypts = [];
 
     var company = new google.maps.LatLng(40.687917, -73.980670);
     createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png');
 
-    for (var i = 0; i < results.features.length && i < 20; i++) {
+    for (var i = 0; i < results.features.length && i < 10; i++) {
 
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
@@ -185,55 +191,47 @@
 
         if (results.features[i].properties.priority == 'High'){
         iconForLocation = icons['high_priority'].icon;
-        waypts.push({
-        location: latLng,
-        stopover: true
-        });
         }
 
         else if (results.features[i].properties.status == 'Company'){
         iconForLocation = icons['company'].icon;
-        start = latLng;
-        end = latLng;
         }
 
         else{
             iconForLocation = icons['low_priority'].icon;
-            waypts.push({
-                location: latLng,
-                stopover: true
-            });
         }
-        createMarker(latLng, iconForLocation, label)
-
+        createMarker(latLng, iconForLocation, label);
     }
 
-    directionsService.route({
-        origin: "30 Flatbush Ave, Brooklyn, NY 11217",
-        destination: "30 Flatbush Ave, Brooklyn, NY 11217",
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: 'DRIVING'
-            }, function(response, status) {
-              if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-                var route = response.routes[0];
-                var summaryPanel = document.getElementById('travel_data');
-                summaryPanel.innerHTML = '';
-                // For each route, display summary information.
-                for (var i = 0; i < route.legs.length; i++) {
-                  var routeSegment = i + 1;
-                  summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                      '</b><br>';
-                  summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                  summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                  summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-                }
-              } else {
-                window.alert('Directions request failed due to ' + status);
-              }
-    });
 
+    $('#submitButton').click(function() {
+        directionsService.route({
+            origin: "30 Flatbush Ave, Brooklyn, NY 11217",
+            destination: "30 Flatbush Ave, Brooklyn, NY 11217",
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: 'DRIVING'
+                }, function(response, status) {
+                  if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                    var route = response.routes[0];
+                    var summaryPanel = document.getElementById('travel_data');
+                    summaryPanel.innerHTML = '';
+                    // For each route, display summary information.
+                    for (var i = 0; i < route.legs.length; i++) {
+                      var routeSegment = i + 1;
+                      summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                          '</b><br>';
+                      summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+                      summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                      summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                    }
+                  } else {
+                    window.alert('Directions request failed due to ' + status);
+                  }
+        });
+
+    });
 }
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 

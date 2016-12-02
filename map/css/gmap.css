@@ -4,3 +4,13 @@ html, body, #map
   margin: 0px;
   padding: 0px;
 }
+
+
+#submitButton {
+	position: fixed;
+	right: 5px;
+	top: 5px;
+	background-color: green;
+	color: white;
+	width: 100px;
+}
