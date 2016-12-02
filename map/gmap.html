@@ -28,6 +28,7 @@
         var map; //the google map element
         var directionDisplay;
         var directionsService = new google.maps.DirectionsService();
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         function initMap() {
             var mapOptions = {
@@ -156,17 +157,18 @@
 
         // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
-        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
+        script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
-        var script = document.createElement('script');
-        script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/Company_geojson.js';
-        document.getElementsByTagName('head')[0].appendChild(script);
+        // var script = document.createElement('script');
+        // script.src = 'https://cdn.rawgit.com/mapholes/mapholes.github.io/master/data/Company_geojson.js';
+        // document.getElementsByTagName('head')[0].appendChild(script);
     }
 
     function createMarker(latlng, iconForLocation) {
         var marker = new google.maps.Marker({
             position: latlng,
+            // label: labels[labelIndex++ % labels.length],
             icon: iconForLocation,
             map: map
         });
@@ -196,6 +198,9 @@
     var start, end;
     var waypts = [];
 
+    var company = new google.maps.LatLng(40.687917, -73.980670);
+    createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png');
+
     for (var i = 0; i < results.features.length && i < 20; i++) {
 
         var coords = results.features[i].geometry.coordinates;
@@ -212,7 +217,7 @@
         });
         }
 
-        else if (results.features[i].properties.type == 'Head Office'){
+        else if (results.features[i].properties.status == 'Company'){
         iconForLocation = icons['company'].icon;
         start = latLng;
         end = latLng;
@@ -229,25 +234,33 @@
 
     }
 
-var request = {
-    origin: start,
-    destination: end,
-    waypoints: waypts,
-    optimizeWaypoints: true,
-    travelMode: google.maps.DirectionsTravelMode.WALKING
-};
+    directionsService.route({
+        origin: "30 Flatbush Ave, Brooklyn, NY 11217",
+        destination: "30 Flatbush Ave, Brooklyn, NY 11217",
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: 'DRIVING'
+            }, function(response, status) {
+              if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                var route = response.routes[0];
+                var summaryPanel = document.getElementById('travel_data');
+                summaryPanel.innerHTML = '';
+                // For each route, display summary information.
+                for (var i = 0; i < route.legs.length; i++) {
+                  var routeSegment = i + 1;
+                  summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                      '</b><br>';
+                  summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+                  summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                  summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                }
+              } else {
+                window.alert('Directions request failed due to ' + status);
+              }
+    });
 
-// alert(request.toString());
-
-directionsService.route(request, function (response, status) {
-    if (status == google.maps.DirectionsStatus.OK) {
-        directionsDisplay.setDirections(response);
-        var route = response.routes[0].legs[0];
-        $( '#travel_data' ).html( 'Estimated travel time: ' + route.duration.text + ' (' + route.distance.text + ')' );
-    }
-});
 }
-
       // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
 
       // var drawingManager = new google.maps.drawing.DrawingManager();
