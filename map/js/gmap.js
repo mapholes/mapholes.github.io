@@ -240,7 +240,7 @@ $(document).ready(function(){
     }
 
     var company = new google.maps.LatLng(40.687917, -73.980670);
-    createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png');
+    createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png', 'Company Head Office');
 
     for (var i = 0; i < results.features.length; i++) {
 
