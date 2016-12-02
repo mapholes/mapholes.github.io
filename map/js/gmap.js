@@ -136,28 +136,7 @@
 
     }
 
-    function addSelectedPoint(position){
-      waypts.push({
-                location: position,
-                stopover: true
-            });
-    }
-
-    function createMarker(latlng, iconForLocation,label) {
-        var marker = new google.maps.Marker({
-            position: latlng,
-            icon: iconForLocation,
-            map: map,
-            title: label
-        });
-
-        marker.addListener('click', function(event) {
-          addSelectedPoint(latlng);
-          
-        });
-    }
-
-        // Loop through the results array and place a marker for each
+            // Loop through the results array and place a marker for each
       // set of coordinates.
       window.eqfeed_callback = function(results) {
 
@@ -177,6 +156,27 @@
         }
     };
 
+
+    function addSelectedPoint(position){
+      waypts.push({
+                location: position,
+                stopover: true
+            });
+    }
+
+    function createMarker(latlng, iconForLocation,label) {
+        var marker = new google.maps.Marker({
+            position: latlng,
+            icon: iconForLocation,
+            map: map,
+            title: label
+        });
+
+        marker.addListener('click', function(event) {
+          addSelectedPoint(latlng);
+          marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png"); 
+        });
+    }
 
     var company = new google.maps.LatLng(40.687917, -73.980670);
     createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png');
