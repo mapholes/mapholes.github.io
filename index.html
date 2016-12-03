@@ -11,8 +11,17 @@
     </head>
 
     <body onload="initMap();">
+    	<div id="Heading">
+			<h1>
+				<span id="title">MapHoles</span> 
+			</h1>
+		</div>
         <div id="map"></div>
         <button id="HomeStartButton" class="btn btn-info">Start!</button>
+
+    	<div id="footer">
+			<p style="color: #333;"> Amandeep Singh &middot; Phearun Rith &middot; Ofure Ukpebor &middot; Luis Villamarin &middot;  WebGIS &middot; Fall 2016 &middot; The City College of New York </p>
+		</div>
 
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhV1yHFyxci_wmV6BB4X-qboGt9NnVFGU&libraries=drawing"></script>    
     	<script type="text/javascript">
@@ -23,6 +32,10 @@
 	            var mapOptions = {
 	                center: new google.maps.LatLng(40.604050, -74.000557), 
 	                zoom:10,
+	                zoomControl: false,
+	                mapTypeControl: false,
+	                streetViewControl: false,
+				    scaleControl: false,
 	                styles:[
 	                {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
 	                {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
@@ -146,9 +159,10 @@
 	            $(document).ready(function(){
 
 	    			$('#HomeStartButton').click(function(){
-						// setTimeout(function(){$('#HomeStartButton').hide('slow')}, 30000);
 						$('#HomeStartButton').hide('slow');
-						setTimeout(function(){window.location.href = "https://mapholes.github.io/map/"}, 1000);
+						$('#Heading').slideUp('slow');
+						$('#footer').slideUp('slow');
+						setTimeout(function(){window.location.href = "https://mapholes.github.io/map/"}, 500);
 					})
 				});
 		    }

@@ -6,7 +6,8 @@ html, body, #map
 }
 
 html, body {
-	font-family: 'PT Sans', sans-serif;
+	/*font-family: 'PT Sans', sans-serif;*/
+	font-family: 'Rakkas', cursive;
 }
 
 #submitButton {
@@ -115,4 +116,46 @@ html, body {
 	font-size: 20px;
 	width: 200px;
 	box-shadow: 0px 0px 89px 13px rgba(10,86,99,1);
+}
+
+
+#Heading{
+	font-family: 'Rakkas', cursive;
+	position:fixed;
+	left:0px;
+	top:0px;
+	width:100%;
+	z-index: 1010;
+	font-size: 26px;
+	text-align: center;
+	background: #222;
+	color: white;
+	margin-top: 0px;
+	height: 40px;
+}
+
+#Heading H1 {
+	padding-top: -5px;
+	font-size: 28px;
+	margin-top: 5px;
+}
+
+
+
+#footer {
+	font-family: 'Rakkas', cursive;	
+	text-align: center;
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	height:35px;
+	width:100%;
+	background:#999;
+	z-index: 1010;
+}
+
+#footer p{
+	font-size: 22px;
+	text-align: center;
+	margin-top: 5px;
 }
