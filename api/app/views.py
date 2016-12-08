@@ -1,4 +1,6 @@
-from flask import Blueprint, redirect, url_for, abort, request
+import json
+
+from flask import Blueprint, redirect, url_for, abort, request, jsonify
 
 from app import db
 from app.models import Manhole, WorkOrder, Employee
@@ -111,10 +113,19 @@ def workorder():
 
 @api.route('/manhole', methods=['GET'])
 def manhole():
-
     if request.method == 'GET':
-        #TODO: handle bulk manhole request
-        the_id = request.args.get('id')
-        a_manhole = Manhole.query.filter_by(id=the_id).first()
-        if not a_manhole:
-            abort(404)
+        if request.args.get('full'):
+            manholes = Manhole.query.all()
+            if not manholes:
+                abort(404)
+            out = [hole.to_dict() for hole in manholes]
+            response = {'manholes': out, 'count': len(out)}
+            return jsonify(response), 200
+        elif request.args.get('id'):
+            the_id = request.args.get('id')
+            a_manhole = Manhole.query.filter_by(id=the_id).first()
+            if not a_manhole:
+                abort(404)
+            return jsonify(a_manhole.to_dict()), 200
+        else:
+            abort(422)

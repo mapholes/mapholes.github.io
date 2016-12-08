@@ -24,6 +24,11 @@ class Manhole(db.Model):
     # Relationships
     workorders = db.relationship('WorkOrder', backref='manhole',  lazy='dynamic')
 
+    def to_dict(self):
+        out = self.__dict__
+        out.pop('_sa_instance_state', None)
+        return out
+
 
 workorder_employees = db.Table('workorder_employees',
     db.Column('workorder_id', db.Integer, db.ForeignKey('work_order.id')),
