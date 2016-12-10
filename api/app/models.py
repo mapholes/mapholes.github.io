@@ -65,3 +65,8 @@ class Employee(db.Model):
 
     # Foreign keys
     workorders = db.Column(db.Integer, db.ForeignKey('work_order.id'))
+
+    def to_dict(self):
+        out = self.__dict__
+        out.pop('_sa_instance_state', None)
+        return out

@@ -13,11 +13,21 @@ api = Blueprint("api", __name__, url_prefix='/api')
 def employee():
 
     if request.method == 'GET':
-        the_id = request.args.get('id')
-        an_employee  = Employee.query.filter_by(id=the_id).first()
-        if not an_employee:
-            abort(404)
-        return jsonify(an_employee)
+        if request.args.get('full'):
+            employees = Employee.query.all()
+            if not employees:
+                abort(404)
+            out = [emp.to_dict() for emp in employees]
+            response = {'employees': out, 'count': len(out)}
+            return jsonify(response), 200
+        elif request.args.get('id'):
+            the_id = request.args.get('id')
+            an_employee  = Employee.query.filter_by(id=the_id).first()
+            if not an_employee:
+                abort(404)
+            return jsonify(an_employee.to_dict())
+        else:
+            abort(422)
     elif request.method == 'POST':
         data = request.get_json()
         if data:
