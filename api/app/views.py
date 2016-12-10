@@ -1,5 +1,6 @@
 import json
 
+from sqlalchemy import exc
 from flask import Blueprint, redirect, url_for, abort, request, jsonify
 
 from app import db
@@ -25,7 +26,8 @@ def employee():
             an_employee  = Employee.query.filter_by(id=the_id).first()
             if not an_employee:
                 abort(404)
-            return jsonify(an_employee.to_dict())
+            response = {'count': 1, 'data': [an_employee.to_dict()]}
+            return jsonify(response), 200
         else:
             abort(422)
     elif request.method == 'POST':
@@ -36,11 +38,12 @@ def employee():
                 lname=data.get('lname'),
                 department=data.get('department')
             )
-
             try:
                 db.session.add(an_employee)
                 db.session.commit()
-                return jsonify(an_employee), 201
+                out = Employee.query.filter_by(id=an_employee.id).first()
+                response = {'count': 1, 'data': [out.to_dict()]}
+                return jsonify(response), 201
             except exc.SQLAlchemyError, e:
                 response = {
                     'Status': "Failed",
@@ -59,12 +62,22 @@ def employee():
 def workorder():
 
     if request.method == 'GET':
-        the_id = request.args.get('id')
-        a_workorder = WorkOrder.query.filter_by(id=the_id).first()
-        if not a_workorder:
-            abort(404)
-        return jsonify(a_workorder)
-
+        if request.args.get('full'):
+            workorders = WorkOrder.query.all()
+            if not workorders:
+                abort(404)
+            out = [order.to_dict() for order in workorders]
+            response = {'data': out, 'count': len(out)}
+            return jsonify(out), 200
+        elif request.args.get('id'):
+            the_id = request.args.get('id')
+            a_workorder = WorkOrder.query.filter_by(id=the_id).first()
+            if not a_workorder:
+                abort(404)
+            response = {'data': a_workorder.to_dict(), 'count': 1}
+            return jsonify(response), 200
+        else:
+            abort(422)
     elif request.method == 'DELETE':
         the_id = request.args.get('id')
         a_workorder = WorkOrder.query.filter_by(id=the_id).first()
@@ -72,13 +85,15 @@ def workorder():
             abort(404)
         db.session.delete(a_workorder)
         db.session.commit()
-
+        return jsonify({'Status': 'Success'}), 200
     else:
         data = request.get_json()
         if not data:
             abort(415)
 
         if request.method == 'POST':
+            an_employee = (
+                Employee.query.filter_by(id=data.get('employee_id')).first())
             a_workorder = WorkOrder(
                 complaint_type=data.get('complaint_type'),
                 priority=data.get('priority'),
@@ -89,9 +104,13 @@ def workorder():
                 location=data.get('location')
             )
             try:
+                if an_employee:
+                    a_workorder.assigned_to.append(an_employee)
                 db.session.add(a_workorder)
                 db.session.commit()
-                return jsonify(a_workorder), 201
+                out = WorkOrder.query.filter_by(id=a_workorder.id).first()
+                response = {'data': [out.to_dict()], 'count': 1}
+                return jsonify(response), 201
             except exc.SQLAlchemyError, e:
                 response = {
                     'Status': "Failed",
@@ -129,13 +148,14 @@ def manhole():
             if not manholes:
                 abort(404)
             out = [hole.to_dict() for hole in manholes]
-            response = {'manholes': out, 'count': len(out)}
+            response = {'data': out, 'count': len(out)}
             return jsonify(response), 200
         elif request.args.get('id'):
             the_id = request.args.get('id')
             a_manhole = Manhole.query.filter_by(id=the_id).first()
             if not a_manhole:
                 abort(404)
-            return jsonify(a_manhole.to_dict()), 200
+            response = {'data': [a_manhole.to_dict()], 'count':1}
+            return jsonify(response), 200
         else:
             abort(422)

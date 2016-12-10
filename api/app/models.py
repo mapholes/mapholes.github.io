@@ -53,7 +53,12 @@ class WorkOrder(db.Model):
 
     # relationships
     assigned_to = db.relationship('WorkOrder', secondary=workorder_employees,
-        backref=db.backref('workorders',  lazy='dynamic'))
+        backref=db.backref('workorder_employees',  lazy='dynamic'))
+
+    def to_dict(self):
+        out = self.__dict__
+        out.pop('_sa_instance_state', None)
+        return out
 
 
 class Employee(db.Model):
@@ -62,9 +67,6 @@ class Employee(db.Model):
     fname = db.Column(db.String(72))
     lname = db.Column(db.String(72))
     department = db.Column(db.String(72))
-
-    # Foreign keys
-    workorders = db.Column(db.Integer, db.ForeignKey('work_order.id'))
 
     def to_dict(self):
         out = self.__dict__
