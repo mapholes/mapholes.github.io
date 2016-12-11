@@ -31,7 +31,7 @@ class Manhole(db.Model):
 
 
 workorder_employees = db.Table('workorder_employees',
-    db.Column('workorder_id', db.Integer, db.ForeignKey('work_order.id')),
+    db.Column('work_order_id', db.Integer, db.ForeignKey('work_order.id')),
     db.Column('employee_id', db.Integer, db.ForeignKey('employee.id'))
 )
 
@@ -52,8 +52,7 @@ class WorkOrder(db.Model):
     location = db.Column(db.Integer, db.ForeignKey('manhole.id'))
 
     # relationships
-    assigned_to = db.relationship('WorkOrder', secondary=workorder_employees,
-        backref=db.backref('workorder_employees',  lazy='dynamic'))
+    assigned_to = db.relationship('Employee', secondary=workorder_employees)
 
     def to_dict(self):
         out = self.__dict__

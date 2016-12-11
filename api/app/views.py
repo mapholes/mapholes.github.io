@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from sqlalchemy import exc
 from flask import Blueprint, redirect, url_for, abort, request, jsonify
@@ -66,15 +67,32 @@ def workorder():
             workorders = WorkOrder.query.all()
             if not workorders:
                 abort(404)
-            out = [order.to_dict() for order in workorders]
+
+            out = []
+            for order in workorders:
+                setattr(
+                    order,
+                    'location',
+                    url_for('api.manhole', id=getattr(order, 'location')))
+                out.append(order.to_dict())
+
+            # out = [order.to_dict() for order in workorders]
             response = {'data': out, 'count': len(out)}
             return jsonify(out), 200
         elif request.args.get('id'):
             the_id = request.args.get('id')
             a_workorder = WorkOrder.query.filter_by(id=the_id).first()
+
             if not a_workorder:
                 abort(404)
-            response = {'data': a_workorder.to_dict(), 'count': 1}
+
+            setattr(
+                a_workorder,
+                'location',
+                url_for('api.manhole', id=getattr(a_workorder, 'location'))
+            )
+            out = a_workorder.to_dict()
+            response = {'data': out, 'count': 1}
             return jsonify(response), 200
         else:
             abort(422)
@@ -99,7 +117,7 @@ def workorder():
                 priority=data.get('priority'),
                 status=data.get('status'),
                 estimated_time=data.get('estimated_time'),
-                modified=data.get('modified'),
+                modified=datetime.utcnow(),
                 customer=data.get('customer'),
                 location=data.get('location')
             )
@@ -108,8 +126,12 @@ def workorder():
                     a_workorder.assigned_to.append(an_employee)
                 db.session.add(a_workorder)
                 db.session.commit()
+
                 out = WorkOrder.query.filter_by(id=a_workorder.id).first()
-                response = {'data': [out.to_dict()], 'count': 1}
+                location_url = url_for('api.manhole', id=getattr(out, 'location'))
+                setattr(out, 'location', location_url)
+
+                response = {'data': [out.to_dict()], 'count': 1, 'links': [location_url]}
                 return jsonify(response), 201
             except exc.SQLAlchemyError, e:
                 response = {
@@ -119,13 +141,41 @@ def workorder():
                 return jsonify(response), 500
         elif request.method == 'PUT':
             a_workorder = WorkOrder.query.filter_by(id=data.get('id')).first()
-            #TODO: remove params that should't be updated, update modified date
+
+            # remove non-updateble keys
+            no_update_fields = ['id', 'modified']
+            for key in data.keys():
+                if key in no_update_fields:
+                    del data[key]
+
+            # Add/Remove employees assigned_to the work order
+            an_employee = (
+                Employee.query
+                .filter_by(id=data.pop('employee_id', None))
+                .first()
+            )
+
+            # update attributes
             for key, item in data.iteritems():
                 if getattr(a_workorder, key) != item:
                     setattr(a_workorder, item)
             try:
+                emp_ids = [i.id for i in a_workorder.assigned_to]
+                if an_employee.id in emp_ids:
+                    idx = emp_ids.index(an_employee.id)
+                    a_workorder.assigned_to.remove(a_workorder.assigned_to[idx])
+                else:
+                    a_workorder.assigned_to.append(an_employee)
+                db.session.add(a_workorder)
                 db.session.commit()
-                return jsonify(a_workorder)
+
+                updated_workorder = WorkOrder.query.filter_by(id=a_workorder.id).first()
+                links = []
+                response = {
+                    'count':1,
+                    'data': [updated_workorder.to_dict()],
+                    'links': [url_for('api.employee', id=i) for i in emp_ids]}
+                return jsonify(response), 200
             except exc.SQLAlchemyError, e:
                 response = {
                     'Status': "Failed",
