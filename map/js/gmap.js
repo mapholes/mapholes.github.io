@@ -7,9 +7,7 @@
         var toggle = 0;
         var totalEstimatedTime = 0;
         var totalWorkTime = 0;
-        
 function toggleTable(){
-
   if (toggle == 0) {
     toggle = 1
     $('#arrow').text('◀')
@@ -24,15 +22,13 @@ function toggleTable(){
     $('#infoTable').animate({
             right : "5px"
         }, 'fast');  
-
   }
 }
-
 $(document).ready(function(){
   $('#infoTable').hide();
   $('#travel_data').hide();
+  $('#workOrderSummary').hide();
 });
-
         function initMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(40.604050, -74.000557), 
@@ -148,25 +144,20 @@ $(document).ready(function(){
                 }
                 ]
             }
-
-
             directionsDisplay = new google.maps.DirectionsRenderer({
                 suppressMarkers: true
             });
-
             map = new google.maps.Map(document.getElementById('map'), mapOptions);
             directionsDisplay.setMap(map);
 
 
         // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
-        // script.src = 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         script.src = 'https://rawgit.com/mapholes/mapholes.github.io/master/data/manholes_geojson.js';
         document.getElementsByTagName('head')[0].appendChild(script);
 
     }
-
-            // Loop through the results array and place a marker for each
+      // Loop through the results array and place a marker for each
       // set of coordinates.
       window.eqfeed_callback = function(results) {
 
@@ -185,7 +176,6 @@ $(document).ready(function(){
             icon: iconBase + 'companyIcon.png'
         }
     };
-
 
     function addSelectedPoint(position){
       waypts.push({
@@ -217,11 +207,7 @@ $(document).ready(function(){
           content: label
         });
 
-        
-
-        
         marker.addListener('click', function(event) {
-
           var currentPoint = {'uniquekey':uniquekey, 
                               'complaintType': complaintType,
                               'address': address,
@@ -238,13 +224,10 @@ $(document).ready(function(){
               marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png");
               totalEstimatedTime += estimatedTime;
           }
-          //console.log(selectedPoints);
         });
-
         marker.addListener('mouseover', function() {
         infowindow.open(map, marker);
         });
-
         marker.addListener('mouseout', function() {
           infowindow.close();
         });
@@ -253,9 +236,10 @@ $(document).ready(function(){
 
     var company = new google.maps.LatLng(40.687917, -73.980670);
     createMarker(company, 'https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/companyIcon.png', 'Company Head Office');
+    var totalHighPriority = 0;
+    var totalWorkOrders = results.features.length;
 
     for (var i = 0; i < results.features.length; i++) {
-
         var coords = results.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
         var label = results.features[i].properties.complainttype;
@@ -264,32 +248,28 @@ $(document).ready(function(){
         var tools = results.features[i].properties.ToolsRequired;
         var estimatedTime = results.features[i].properties.EstimatedTime;
         var uniquekey = results.features[i].properties.uniquekey;
-        // tableHTML += '<tr><td>'+i+'</td><td>'
-        //           + results.features[i].properties.complainttype 
-        //           + '</td><td>'
-        //           + results.features[i].properties.address + ',' + results.features[i].properties.city
-        //           + '</td><td>'
-        //           + results.features[i].properties.ToolsRequired
-        //           + '</td><td>'
-        //           + results.features[i].properties.EstimatedTime
-        //           + '</td></tr>';
-
+        //var priority = results.features[i].properties.priority;
         var iconForLocation;
 
         if (results.features[i].properties.priority == 'High'){
+        totalHighPriority += 1;
         iconForLocation = icons['high_priority'].icon;
         }
-
         else if (results.features[i].properties.status == 'Company'){
         iconForLocation = icons['company'].icon;
         }
-
         else{
             iconForLocation = icons['low_priority'].icon;
         }
         createMarker(latLng, iconForLocation, label, complaintType, address, tools, estimatedTime, i, uniquekey);
     }
 
+    $(function() {
+      var infoDiv = document.getElementById('workOrderSummary');
+      infoDiv.innerHTML = '<p><b>Total Work-Orders: </b> <i>' + totalWorkOrders + '</i></p>'
+                        + '<p><b>High Priority Work-Orders: </b> <i>' + totalHighPriority + '</i></p>';
+      $('#workOrderSummary').show('slow');
+    });
 
     $('#submitButton').click(function() {
       var tableHTML = '<div id="tableHeader" title="Hide Table" onClick="toggleTable();" style="background-color: #DD8324;color: SADDLEBROWN;border-radius: 5px 5px 0px 0px; height: 16px;"><span id="arrow" style="text-align: left; font-size: 12">▶</span> <span style="text-align: center; width:990px;"></span></div>';
@@ -314,10 +294,8 @@ $(document).ready(function(){
             + '</td></tr>';
       }
 
-            
-
       tableHTML += '</table>';  
-      // alert(tableHTML);
+      $('#infoAlert').slideUp();
       $('#infoTable').html(tableHTML);
       $('#infoTable').show('normal');
       $('#travel_data').show('slow');
@@ -334,23 +312,15 @@ $(document).ready(function(){
                     var route = response.routes[0];
                     var summaryPanel = document.getElementById('travel_data');
                     summaryPanel.innerHTML = '';
-                    // For each route, display summary information.
-                    
+                    // For each route, display summary information.                    
                     var totalDistance = 0;
                     var totalTime = 0;
 
                     for (var i = 0; i < route.legs.length; i++) {
-                      // var routeSegment = i + 1;
-
-                      totalTime += parseInt(route.legs[i].duration.text);
-                      // alert(route.legs[i].duration.text);                     
+                      totalTime += parseInt(route.legs[i].duration.text);  
                       totalDistance += parseFloat(route.legs[i].distance.text);
-                      // summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                      //     '</b><br>';
-                      // summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                      // summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                      // summaryPanel.innerHTML += parseInt(route.legs[i].distance.text) + '<br><br>';
                     }
+
                     totalWorkTime = (totalEstimatedTime + (totalTime/60)).toFixed(2);
                     summaryPanel.innerHTML = '<p><b>Total Distance:</b> ' + totalDistance.toFixed(2) + ' mi</p>'
                                            + '<p><b>Travel Time:</b> ' + (totalTime/60).toFixed(2) + ' hrs</p>'
@@ -360,9 +330,5 @@ $(document).ready(function(){
                     window.alert('Directions request failed due to ' + status);
                   }
         });
-
     });
-
-
-
 }

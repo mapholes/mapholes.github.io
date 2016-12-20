@@ -140,7 +140,28 @@ html, body {
 	margin-top: 5px;
 }
 
+#workOrderSummary {
+	position: fixed;
+	left: 5px;
+	top: 6%;
+	height:75px;
+	width: 250px;
+	padding: 5px;
+	font-size: 16px;
+	border-radius: 10px 10px 10px 10px;
+	box-shadow: 10px 10px 17px -6px rgba(3,44,59,0.8);
+	background-color: #222;
+	color: #DD8324;
+}
 
+#infoAlert{
+	z-index: 10;
+	position: absolute;
+    top: 30px;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
 
 #footer {
 	font-family: 'Rakkas', cursive;	
