@@ -7,9 +7,7 @@
         var toggle = 0;
         var totalEstimatedTime = 0;
         var totalWorkTime = 0;
-        var tableHTML = '<div id="tableHeader" title="Hide Table" onClick="toggleTable();" style="background-color: #DD8324;color: SADDLEBROWN;border-radius: 5px 5px 0px 0px; height: 16px;"><span id="arrow" style="text-align: left; font-size: 12">▶</span> <span style="text-align: center; width:990px;"></span></div>';
-        tableHTML += '<table><tr><th>Key</th><th>Type</th><th>Location</th><th>Tools Required</th><th>Estimated Time</th></tr>';
-
+        
 function toggleTable(){
 
   if (toggle == 0) {
@@ -195,8 +193,19 @@ $(document).ready(function(){
                 stopover: true
             });
     }
+    var selectedPoints = [];
+    
+    function pointIsSelected(someObject){
+      for (var i=0; i<selectedPoints.length; i++){
+        if (selectedPoints[i].uniquekey == someObject.uniquekey){
+          selectedPoints.splice(i,1);
+          return true;
+        }
+      }
+      return false;
+    }
 
-    function createMarker(latlng, iconForLocation, label, complaintType, address, tools, estimatedTime, i) {
+    function createMarker(latlng, iconForLocation, label, complaintType, address, tools, estimatedTime, i, uniquekey) {
         var marker = new google.maps.Marker({
             position: latlng,
             icon: iconForLocation,
@@ -208,25 +217,28 @@ $(document).ready(function(){
           content: label
         });
 
+        
+
+        
         marker.addListener('click', function(event) {
-          addSelectedPoint(latlng);
-          marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png"); 
 
-          tableHTML += '<tr><td>'
-          + key
-          + '</td><td>'
-          + complaintType 
-          + '</td><td>'
-          + address 
-          + '</td><td>'
-          + tools
-          + '</td><td>'
-          + estimatedTime
-          + '</td></tr>';
+          var currentPoint = {'uniquekey':uniquekey, 
+                              'complaintType': complaintType,
+                              'address': address,
+                              'tools': tools,
+                              'estimatedTime' :estimatedTime,
+                              'latlng': latlng
+                              };
 
-          totalEstimatedTime += estimatedTime;
-          key += 1;
-
+          if (pointIsSelected (currentPoint)){
+             marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/low_priority.png");
+             totalEstimatedTime -= estimatedTime;
+          } else{
+              selectedPoints.push(currentPoint);
+              marker.setIcon("https://raw.githubusercontent.com/mapholes/mapholes.github.io/master/img/selected.png");
+              totalEstimatedTime += estimatedTime;
+          }
+          //console.log(selectedPoints);
         });
 
         marker.addListener('mouseover', function() {
@@ -251,7 +263,7 @@ $(document).ready(function(){
         var address = results.features[i].properties.address + ' ' + results.features[i].properties.city;
         var tools = results.features[i].properties.ToolsRequired;
         var estimatedTime = results.features[i].properties.EstimatedTime;
-
+        var uniquekey = results.features[i].properties.uniquekey;
         // tableHTML += '<tr><td>'+i+'</td><td>'
         //           + results.features[i].properties.complainttype 
         //           + '</td><td>'
@@ -275,11 +287,34 @@ $(document).ready(function(){
         else{
             iconForLocation = icons['low_priority'].icon;
         }
-        createMarker(latLng, iconForLocation, label, complaintType, address, tools, estimatedTime, i);
+        createMarker(latLng, iconForLocation, label, complaintType, address, tools, estimatedTime, i, uniquekey);
     }
 
 
     $('#submitButton').click(function() {
+      var tableHTML = '<div id="tableHeader" title="Hide Table" onClick="toggleTable();" style="background-color: #DD8324;color: SADDLEBROWN;border-radius: 5px 5px 0px 0px; height: 16px;"><span id="arrow" style="text-align: left; font-size: 12">▶</span> <span style="text-align: center; width:990px;"></span></div>';
+        tableHTML += '<table id="mainTable"><tr><th>Key</th><th>Type</th><th>Location</th><th>Tools Required</th><th>Estimated Time</th></tr>';
+
+      waypts = [];
+      var KeyforTable = 0;
+
+      for (var i=0; i<selectedPoints.length; i++){
+          KeyforTable = i + 1;
+          addSelectedPoint(selectedPoints[i].latlng);
+          tableHTML += '<tr><td>'
+            + KeyforTable
+            + '</td><td>'
+            + selectedPoints[i].complaintType 
+            + '</td><td>'
+            + selectedPoints[i].address 
+            + '</td><td>'
+            + selectedPoints[i].tools
+            + '</td><td>'
+            + selectedPoints[i].estimatedTime
+            + '</td></tr>';
+      }
+
+            
 
       tableHTML += '</table>';  
       // alert(tableHTML);
@@ -331,9 +366,3 @@ $(document).ready(function(){
 
 
 }
-
-
-      // DrawingManager GUI for us to draw polygons, rectangles, polylines, circles, and markers on the map.
-
-      // var drawingManager = new google.maps.drawing.DrawingManager();
-      //   drawingManager.setMap(map);
