@@ -18,12 +18,17 @@ html, body {
 /*	background-color: green;
 	color: white;*/
 }
-
+#showTable {
+	position: fixed;
+	right: 45px;
+	bottom: 20px;
+	font-weight: bold;
+}
 #travel_data {
 	position: fixed;
 	left: 5px;
 	bottom: 5px;
-	max-height:200px;
+	height:125px;
 	max-width: 300px;
 	padding: 5px;
 	/*overflow-x: scroll;*/

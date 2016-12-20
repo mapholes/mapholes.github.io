@@ -7,24 +7,21 @@
         var toggle = 0;
         var totalEstimatedTime = 0;
         var totalWorkTime = 0;
+     
 function toggleTable(){
-  if (toggle == 0) {
-    toggle = 1
-    $('#arrow').text('◀')
-    $('#tableHeader').attr('title', 'Show Table')
-    $('#infoTable').animate({
-            right : "-985px"
-        }, 'fast');   
-  } else {
-    toggle = 0
-    $('#arrow').text('▶')
-    $('#tableHeader').attr('title', 'Hide Table')
-    $('#infoTable').animate({
-            right : "5px"
-        }, 'fast');  
-  }
+    $('#infoTable').hide('slow');
+    $('#showTable').show();
 }
+$('#showTable').click(function(){
+  $('#infoTable').show('normal');
+  $('#showTable').hide();
+});
+
 $(document).ready(function(){
+  $('#infoTable').draggable();
+  $('#travel_data').draggable();
+  $('#showTable').hide();
+  $('#workOrderSummary').draggable();
   $('#infoTable').hide();
   $('#travel_data').hide();
   $('#workOrderSummary').hide();
