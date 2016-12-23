@@ -1,6 +1,7 @@
 # mapholes
-MapHoles: Map for managing Manholes
-
+Capstone project in Web Geography Information System (Fall 2016)
+Project Title: MapHoles - Map for managing Manholes
+Project URL: mapholes.github.io
 
 # Querying the API
 
